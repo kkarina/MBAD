@@ -1,6 +1,3 @@
-/**
- * Created by afashokova on 02.02.2017.
- */
 
 
 
