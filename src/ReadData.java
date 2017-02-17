@@ -32,6 +32,9 @@ public class ReadData {
         while ((stringOfData = reader.readNext())!=null){
             char firstLetter = stringOfData[1].charAt(0);
             stringOfData[0] = (firstLetter + stringOfData[0]+' ').toLowerCase();
+            stringOfData[1] = stringOfData[2] + ' ';
+            stringOfData[2] = stringOfData[3];
+            stringOfData[3] = "";
             for (String e : stringOfData)
                 System.out.format("%s", e);
             System.out.println();
