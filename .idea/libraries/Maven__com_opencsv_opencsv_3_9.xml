@@ -5,9 +5,14 @@
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/opencsv/opencsv/3.9/opencsv-3.9-javadoc.jar!/" />
+      <root url="file://$PROJECT_DIR$/mxgraph-master/java/docs" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/com/opencsv/opencsv/3.9/opencsv-3.9-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/mxgraph-master/java/examples" />
+      <root url="file://$PROJECT_DIR$/mxgraph-master/java/src" />
+      <root url="file://$PROJECT_DIR$/mxgraph-master/java/test" />
+      <root url="file://$PROJECT_DIR$/mxgraph-master/javascript/examples/grapheditor/java/src" />
     </SOURCES>
   </library>
 </component>

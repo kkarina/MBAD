@@ -4,6 +4,9 @@
 import com.opencsv.CSVReader;
 import java.io.FileReader;
 
+import static jdk.nashorn.internal.objects.NativeString.charAt;
+
+
 public class ReadData {
 
     public void readProxOut() throws Exception {
@@ -27,8 +30,8 @@ public class ReadData {
         CSVReader reader = new CSVReader(new FileReader(employee), ';');
         String[] stringOfData;
         while ((stringOfData = reader.readNext())!=null){
-            for (int i = 0; i<3; i++)
-                stringOfData[i] = stringOfData[i]+ ' ';
+            char firstLetter = stringOfData[1].charAt(0);
+            stringOfData[0] = (firstLetter + stringOfData[0]+' ').toLowerCase();
             for (String e : stringOfData)
                 System.out.format("%s", e);
             System.out.println();
