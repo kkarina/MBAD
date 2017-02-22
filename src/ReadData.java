@@ -4,7 +4,6 @@
 import com.opencsv.CSVReader;
 import java.io.FileReader;
 
-import static jdk.nashorn.internal.objects.NativeString.charAt;
 
 
 public class ReadData {
@@ -15,11 +14,12 @@ public class ReadData {
         CSVReader reader = new CSVReader(new FileReader(prox), csvSplitBy);
         String[] stringOfData;
         while ((stringOfData = reader.readNext()) != null) {
-           stringOfData[3] = stringOfData[3]+'-'+ stringOfData[4].trim();
-           stringOfData[4] = "";
+            stringOfData[1]=stringOfData[2];
+            stringOfData[2] = stringOfData[3]+'-'+ stringOfData[4].trim();
+
             //вывод
-            for (String e : stringOfData)
-                System.out.format("%s", e);
+            for (int i=0; i<3; i++)
+                System.out.format("%s", stringOfData[i]);
             System.out.println();
 
         }
@@ -35,8 +35,8 @@ public class ReadData {
             stringOfData[1] = stringOfData[2] + ' ';
             stringOfData[2] = stringOfData[3];
             stringOfData[3] = "";
-            for (String e : stringOfData)
-                System.out.format("%s", e);
+            for (int i=0; i<3; i++)
+                System.out.format("%s", stringOfData[i]);
             System.out.println();
 
         }
