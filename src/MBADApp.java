@@ -6,7 +6,7 @@ public class MBADApp {
     public static void main(String args[]) throws Exception {
         ReadData readData = new ReadData();
         try {
-            readData.readProxOut();
+            readData.readEmployeeList();
         } catch (Exception e) {
             e.printStackTrace();
         }
