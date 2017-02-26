@@ -10,9 +10,10 @@ import java.io.FileWriter;
 public class ReadData {
 
     public void readProxOut() throws Exception {
-        String prox = ("C:\\Users\\Afashokova\\IdeaProjects\\MBAD\\data\\proxOut-MC2.csv");
+        String prox = ("data/proxOut-MC2.csv");
         char csvSplitBy = ',';
         CSVReader reader = new CSVReader(new FileReader(prox), csvSplitBy);
+        FileWriter writer = new FileWriter("data/proxout.csv");
         String[] stringOfData;
         while ((stringOfData = reader.readNext()) != null) {
             stringOfData[1]=stringOfData[2];
@@ -20,10 +21,11 @@ public class ReadData {
 
             //вывод
             for (int i=0; i<3; i++)
-                System.out.format("%s", stringOfData[i]);
-            System.out.println();
-
+                writer.write(stringOfData[i]);
+            writer.append("\n");
         }
+        writer.close();
+        reader.close();
     }
 
     public void readEmployeeList() throws Exception {
