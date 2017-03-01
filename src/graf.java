@@ -16,7 +16,7 @@ public class graf {
         graph = new SparseGraph<Integer, String>();
         for (int i = 0; i<21;i++)
             graph.addVertex(i);
-        //1этаж
+
         graph.addEdge("1-1,1-2",0,1, EdgeType.UNDIRECTED);
         graph.addEdge("1-1,1-3",0,2,EdgeType.UNDIRECTED);
         graph.addEdge("1-1,1-4",0,3,EdgeType.UNDIRECTED);
@@ -42,11 +42,11 @@ public class graf {
         graph.addEdge("3,3-6",17,20,EdgeType.UNDIRECTED);
 
 }
-      public void NearestPath(){
+      public void NearestPath(Integer FirstVertex, Integer EndVertex){
          DijkstraShortestPath<Integer,String> alg = new DijkstraShortestPath(graph);
          List<String> l = alg.getPath(20,0);
          System.out.println("Кратчайший путь "+ l);
          DijkstraDistance<Integer,String> alg2 = new DijkstraDistance<Integer, String>(graph);
-         Number l2 = alg2.getDistance(0,20);
+         Number l2 = alg2.getDistance(FirstVertex, EndVertex);
          System.out.println("расстояние " +l2 );
       }}
