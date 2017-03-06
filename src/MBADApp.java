@@ -5,7 +5,11 @@
 public class MBADApp {
     public static void main(String args[]) throws Exception {
         graf g = new graf();
-        g.NearestPath();
+        SqlConnect s = new SqlConnect();
+        s.Connetion();
+        //s.insertIntoProxOut();
+        s.insertIntoEmployee();
+        s.closeConnect();
 
     }
 }

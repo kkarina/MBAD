@@ -25,21 +25,21 @@ public class graf {
         graph.addEdge("1-1,1-7",0,6,EdgeType.UNDIRECTED);
         graph.addEdge("1-1,1-8",0,7,EdgeType.UNDIRECTED);
         graph.addEdge("1-4,2-4",3,11,EdgeType.UNDIRECTED);
-        graph.addEdge("2,1-2",8,9,EdgeType.UNDIRECTED);
-        graph.addEdge("2,1-4",8,11,EdgeType.UNDIRECTED);
-        graph.addEdge("2,1-6",8,13,EdgeType.UNDIRECTED);
-        graph.addEdge("2,1-7",8,14,EdgeType.UNDIRECTED);
-        graph.addEdge("2,2-5",9,12,EdgeType.UNDIRECTED);
-        graph.addEdge("2,3-7",10,14,EdgeType.UNDIRECTED);
-        graph.addEdge("2,4-7",11,14,EdgeType.UNDIRECTED);
-        graph.addEdge("2-4,3-4",11,18,EdgeType.UNDIRECTED);
-        graph.addEdge("2,6-7",13,14,EdgeType.UNDIRECTED);
-        graph.addEdge("3,1-2",15,16,EdgeType.UNDIRECTED);
-        graph.addEdge("3,1-3",15,17,EdgeType.UNDIRECTED);
-        graph.addEdge("3,1-4",15,18,EdgeType.UNDIRECTED);
-        graph.addEdge("3,1-6",15,20,EdgeType.UNDIRECTED);
-        graph.addEdge("3,2-5",16,19,EdgeType.UNDIRECTED);
-        graph.addEdge("3,3-6",17,20,EdgeType.UNDIRECTED);
+        graph.addEdge("2-1,2-2",8,9,EdgeType.UNDIRECTED);
+        graph.addEdge("2-1,2-4",8,11,EdgeType.UNDIRECTED);
+        graph.addEdge("2-1,2-6",8,13,EdgeType.UNDIRECTED);
+        graph.addEdge("2-1,2-7",8,14,EdgeType.UNDIRECTED);
+        graph.addEdge("2-2,2-5",9,12,EdgeType.UNDIRECTED);
+        graph.addEdge("2-3,2-7",10,14,EdgeType.UNDIRECTED);
+        graph.addEdge("2-4,2-7",11,14,EdgeType.UNDIRECTED);
+        graph.addEdge("2-3,2-4",11,18,EdgeType.UNDIRECTED);
+        graph.addEdge("2-6,2-7",13,14,EdgeType.UNDIRECTED);
+        graph.addEdge("3-1,3-2",15,16,EdgeType.UNDIRECTED);
+        graph.addEdge("3-1,3-3",15,17,EdgeType.UNDIRECTED);
+        graph.addEdge("3-1,3-4",15,18,EdgeType.UNDIRECTED);
+        graph.addEdge("3-1,3-6",15,20,EdgeType.UNDIRECTED);
+        graph.addEdge("3-2,3-5",16,19,EdgeType.UNDIRECTED);
+        graph.addEdge("3-3,3-6",17,20,EdgeType.UNDIRECTED);
 
 }
       public void NearestPath(Integer FirstVertex, Integer EndVertex){
