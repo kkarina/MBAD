@@ -1,19 +1,18 @@
 /**
  * Created by afashokova on 01.03.2017.
  */
-import java.io.FileNotFoundException;
 import java.sql.*;
 import com.opencsv.CSVReader;
 import java.io.FileReader;
 
 
-public class SqlConnect {
+public class InsertIntoTables {
     private static final String url = "jdbc:postgresql://localhost:5432/postgres";
     private static final String user = "postgres";
     private static final String password = "123";
     private static Connection con;
     private static Statement stmt;
-    private static ResultSet rs;
+
 
     public Connection Connetion() {
         try {
@@ -67,6 +66,26 @@ public class SqlConnect {
             }
         }
     }
+
+    public void insertIntoIdZone() throws Exception {
+        String query;
+        CSVReader reader = new CSVReader(new FileReader("data/id_zone.csv"), ' ');
+        stmt = con.createStatement();
+        String[] stringOfData;
+        int i = 0;
+        while ((stringOfData = reader.readNext()) != null){
+            query = "insert into mbad.zone_id" +
+                    "(id, zone) " +
+                    "values ('" + i + "', '"+stringOfData[0] +"');";
+            try {
+                stmt.executeUpdate(query);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+            i++;
+        }
+    }
+
 
     public Connection closeConnect() throws Exception {
         try {

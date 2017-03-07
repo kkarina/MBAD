@@ -44,7 +44,7 @@ public class graf {
 }
       public void NearestPath(Integer FirstVertex, Integer EndVertex){
          DijkstraShortestPath<Integer,String> alg = new DijkstraShortestPath(graph);
-         List<String> l = alg.getPath(20,0);
+         List<String> l = alg.getPath(FirstVertex,EndVertex);
          System.out.println("Кратчайший путь "+ l);
          DijkstraDistance<Integer,String> alg2 = new DijkstraDistance<Integer, String>(graph);
          Number l2 = alg2.getDistance(FirstVertex, EndVertex);
