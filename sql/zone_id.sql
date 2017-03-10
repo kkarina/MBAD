@@ -6,3 +6,6 @@ create table mbad.proxout
 
 create table mbad.employee
 (id char(30), department char (50), office integer);
+
+create table mbad.sequences
+(employee_id char(30), Tstart timestamp, Tend timestamp, sequence char(255), duration interval)

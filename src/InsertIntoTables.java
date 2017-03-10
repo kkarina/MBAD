@@ -11,7 +11,8 @@ public class InsertIntoTables {
     private static final String user = "postgres";
     private static final String password = "123";
     private static Connection con;
-    private static Statement stmt;
+    private static Statement stmt, st;
+    private static ResultSet rs;
 
 
     public Connection Connetion() {
@@ -96,5 +97,52 @@ public class InsertIntoTables {
         return con;
     }
 
+    public void selectFromProxOut() throws Exception {
+        String query = "select t.*, (t.next_time - t.\"timestamp\") time_difference\n" +
+                "from\n" +
+                "(\n" +
+                "select p.*,\n" +
+                " LEAD(\"timestamp\") OVER(partition by employee_id ORDER BY null) next_time\n" +
+                "from mbad.proxout p\n" +
+                ")t\n" +
+                ";";
+        stmt = con.createStatement();
+        //st= con. createStatement();
 
+        try {
+            rs  = stmt.executeQuery(query);
+            while(rs.next())
+                System.out.println(rs.getString("employee_id")+rs.getString("timestamp")+"   " + rs.getString("time_difference"));
+
+         /*   rs.next();
+            String sequence = "";
+            String employee  = rs.getString("employee_id");
+            Timestamp Tstart= rs.getTimestamp("Tstart");
+            do {
+                 if (rs.getString("duration").compareTo("00:02:00") <=0){
+                     if (sequence != rs.getString("zone1"))
+                         sequence = sequence + rs.getString("zone1") + rs.getString("zone2") + ", ";
+                     else
+                         sequence = rs.getString("zone1") + rs.getString("zone2") + ", ";
+                 }
+                 else {
+                     query = "insert into mbad.sequences (employee_id, tstart, tend, sequence, duration)" +
+                             "values ('" + employee + "', '" + Tstart + "', '" +
+                             rs.getTimestamp("Tend") + "', '" + sequence.replaceAll("\\s+", " ") + "', '" +
+                             rs.getString("duration") + "');";
+                     Tstart= rs.getTimestamp("Tend");
+                     st.executeUpdate(query);
+                     sequence = rs.getString("zone2");
+                 }
+
+             //employee = rs.getString("employee_id");
+
+
+             }while (rs.next());*/
+
+        }catch (SQLException e) { e.printStackTrace();
+        }
+
+
+    }
 }
