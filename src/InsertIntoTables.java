@@ -1,9 +1,11 @@
 /**
  * Created by afashokova on 01.03.2017.
  */
-import java.sql.*;
+
 import com.opencsv.CSVReader;
+
 import java.io.FileReader;
+import java.sql.*;
 
 
 public class InsertIntoTables {
@@ -24,7 +26,7 @@ public class InsertIntoTables {
         try {
             con = DriverManager.getConnection(url, user, password);
             return con;
-        } catch (SQLException sqlEx)  {
+        } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();
 
         }
@@ -37,15 +39,15 @@ public class InsertIntoTables {
         reader.readNext();
         stmt = con.createStatement();
         String[] stringOfData;
-        while ((stringOfData = reader.readNext()) != null){
+        while ((stringOfData = reader.readNext()) != null) {
             query = "insert into mbad.proxout" +
                     "(\"timestamp\", employee_id, zone) " +
-                    "values ('" + stringOfData[0] +' '+ stringOfData[1] + "' ,'" + stringOfData[2] + "' ,'" +stringOfData[3] +"');";
+                    "values ('" + stringOfData[0] + ' ' + stringOfData[1] + "' ,'" + stringOfData[2] + "' ,'" + stringOfData[3] + "');";
             try {
                 stmt.executeUpdate(query);
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
-                }
+            }
             //System.out.println(query);
         }
     }
@@ -56,13 +58,13 @@ public class InsertIntoTables {
         reader.readNext();
         stmt = con.createStatement();
         String[] stringOfData;
-        while ((stringOfData = reader.readNext())!=null) {
+        while ((stringOfData = reader.readNext()) != null) {
             query = "insert into mbad.employee " +
                     "(id, department, office) " +
-                    "values ('" + stringOfData[0] + "', '" + stringOfData[1] + "', '" +stringOfData[2] + "');";
-            try{
+                    "values ('" + stringOfData[0] + "', '" + stringOfData[1] + "', '" + stringOfData[2] + "');";
+            try {
                 stmt.executeUpdate(query);
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -74,13 +76,13 @@ public class InsertIntoTables {
         stmt = con.createStatement();
         String[] stringOfData;
         int i = 0;
-        while ((stringOfData = reader.readNext()) != null){
+        while ((stringOfData = reader.readNext()) != null) {
             query = "insert into mbad.zone_id" +
                     "(id, zone) " +
-                    "values ('" + i + "', '"+stringOfData[0] +"');";
+                    "values ('" + i + "', '" + stringOfData[0] + "');";
             try {
                 stmt.executeUpdate(query);
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             i++;
@@ -98,49 +100,51 @@ public class InsertIntoTables {
     }
 
     public void selectFromProxOut() throws Exception {
-        String query = "select t.*, (t.next_time - t.\"timestamp\") time_difference\n" +
-                "from\n" +
-                "(\n" +
-                "select p.*,\n" +
-                " LEAD(\"timestamp\") OVER(partition by employee_id ORDER BY null) next_time\n" +
-                "from mbad.proxout p\n" +
-                ")t\n" +
-                ";";
-        stmt = con.createStatement();
-        //st= con. createStatement();
+        String query = "SELECT x.timestamp as Tstart, y.timestamp as Tend, (y.timestamp - x.timestamp) as duration, x.employee_id, x.zone as zone1, y.zone as zone2\n" +
+                " FROM mbad.proxout x \n" +
+                " join mbad.proxout y\n" +
+                " on x.employee_id = y.employee_id  \n" +
+                " and y.timestamp = (select min(y2.timestamp) \n" +
+                "             from mbad.proxout y2 \n" +
+                "             where x.employee_id=y2.employee_id and x.timestamp<y2.timestamp);";
+
 
         try {
-            rs  = stmt.executeQuery(query);
-            while(rs.next())
-                System.out.println(rs.getString("employee_id")+rs.getString("timestamp")+"   " + rs.getString("time_difference"));
-
-         /*   rs.next();
+            stmt = con.createStatement();
+            st = con.createStatement();
+            rs = stmt.executeQuery(query);
+            rs.next();
             String sequence = "";
-            String employee  = rs.getString("employee_id");
-            Timestamp Tstart= rs.getTimestamp("Tstart");
+            String employee = rs.getString("employee_id");
+            Timestamp Tstart = rs.getTimestamp("Tstart");
             do {
-                 if (rs.getString("duration").compareTo("00:02:00") <=0){
-                     if (sequence != rs.getString("zone1"))
-                         sequence = sequence + rs.getString("zone1") + rs.getString("zone2") + ", ";
-                     else
-                         sequence = rs.getString("zone1") + rs.getString("zone2") + ", ";
-                 }
-                 else {
-                     query = "insert into mbad.sequences (employee_id, tstart, tend, sequence, duration)" +
-                             "values ('" + employee + "', '" + Tstart + "', '" +
-                             rs.getTimestamp("Tend") + "', '" + sequence.replaceAll("\\s+", " ") + "', '" +
-                             rs.getString("duration") + "');";
-                     Tstart= rs.getTimestamp("Tend");
-                     st.executeUpdate(query);
-                     sequence = rs.getString("zone2");
-                 }
+                employee = rs.getString("employee_id");
+                if (((rs.getString("duration").compareTo("00:02:00") <= 0))&&(employee.compareTo(rs.getString("employee_id")) == 0)){
+                    if (sequence.compareTo(rs.getString("zone1"))!=0)
+                            sequence = sequence + rs.getString("zone1") + rs.getString("zone2") + ", ";
+                    else
+                        sequence = rs.getString("zone1") + rs.getString("zone2") + ", ";}
+                     else {
 
-             //employee = rs.getString("employee_id");
+                        query = "insert into mbad.sequences (employee_id, tstart, tend, sequence, duration)" +
+                                "values ('" + employee + "', '" + Tstart + "', '" +
+                                rs.getTimestamp("Tend") + "', '" + sequence.replaceAll("\\s+", " ").replaceAll(" ,", ",").trim() + "', '" +
+                                rs.getString("duration") + "');";
+                        Tstart = rs.getTimestamp("Tend");
+                        st.executeUpdate(query);
+                        sequence = rs.getString("zone2");
+                        System.out.println(query);
 
 
-             }while (rs.next());*/
+                    }
 
-        }catch (SQLException e) { e.printStackTrace();
+
+
+
+            } while (rs.next());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 
