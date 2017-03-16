@@ -118,25 +118,25 @@ public class InsertIntoTables {
             String employee = rs.getString("employee_id");
             Timestamp Tstart = rs.getTimestamp("Tstart");
             do {
-                employee = rs.getString("employee_id");
-                if (((rs.getString("duration").compareTo("00:02:00") <= 0))&&(employee.compareTo(rs.getString("employee_id")) == 0)){
+                if (employee.compareTo(rs.getString("employee_id")) == 0){
+                if ((rs.getString("duration").compareTo("00:02:00") <= 0)){
                     if (sequence.compareTo(rs.getString("zone1"))!=0)
                             sequence = sequence + rs.getString("zone1") + rs.getString("zone2") + ", ";
                     else
                         sequence = rs.getString("zone1") + rs.getString("zone2") + ", ";}
                      else {
 
-                        query = "insert into mbad.sequences (employee_id, tstart, tend, sequence, duration)" +
-                                "values ('" + employee + "', '" + Tstart + "', '" +
-                                rs.getTimestamp("Tend") + "', '" + sequence.replaceAll("\\s+", " ").replaceAll(" ,", ",").trim() + "', '" +
-                                rs.getString("duration") + "');";
-                        Tstart = rs.getTimestamp("Tend");
-                        st.executeUpdate(query);
-                        sequence = rs.getString("zone2");
-                        System.out.println(query);
-
-
-                    }
+                    query = "insert into mbad.sequences (employee_id, tstart, tend, sequence, duration)" +
+                            "values ('" + employee + "', '" + Tstart + "', '" +
+                            rs.getTimestamp("Tend") + "', '" + sequence.replaceAll("\\s+", " ").replaceAll(" ,", ",").trim() + "', '" +
+                            rs.getString("duration") + "');";
+                    Tstart = rs.getTimestamp("Tend");
+                    st.executeUpdate(query);
+                    sequence = rs.getString("zone2");
+                    employee = rs.getString("employee_id");
+                }
+                    else
+                }
 
 
 
