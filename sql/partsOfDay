@@ -1,0 +1,22 @@
+select "timestamp", employee_id, zone
+from (SELECT "timestamp", employee_id, zone, to_number(to_char("timestamp", 'hh24'), '99') as h
+	FROM mbad.proxout)night
+      where h<=6;
+
+select "timestamp", employee_id, zone
+from (SELECT "timestamp", employee_id, zone, to_number(to_char("timestamp", 'hh24'), '99') as h,
+										 	 to_number(to_char("timestamp",   'ss'), '99') as s      										
+	FROM mbad.proxout)morning
+      where ((h>=6 and s>0) and h<=12);
+ 
+select "timestamp", employee_id, zone
+from (SELECT "timestamp", employee_id, zone, to_number(to_char("timestamp", 'hh24'), '99') as h,
+										 	 to_number(to_char("timestamp",   'ss'), '99') as s      										
+	FROM mbad.proxout)morning
+      where ((h>=12 and s>0) and h<=18); 
+      
+select "timestamp", employee_id, zone
+from (SELECT "timestamp", employee_id, zone, to_number(to_char("timestamp", 'hh24'), '99') as h,
+										 	 to_number(to_char("timestamp",   'ss'), '99') as s      										
+	FROM mbad.proxout)morning
+      where ((h>=12 and s>0) and h<=18); 
