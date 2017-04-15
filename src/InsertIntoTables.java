@@ -6,6 +6,7 @@ import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.sql.*;
+import java.text.DecimalFormat;
 
 
 public class InsertIntoTables {
@@ -35,14 +36,20 @@ public class InsertIntoTables {
 
     public void insertIntoProxOut() throws Exception {
         String query;
-        CSVReader reader = new CSVReader(new FileReader("data/proxout.csv"), ' ');
+        CSVReader reader = new CSVReader(new FileReader("data/prox.csv"), ';');
         reader.readNext();
         stmt = con.createStatement();
         String[] stringOfData;
+        String duration;
         while ((stringOfData = reader.readNext()) != null) {
+
+            if (stringOfData[3].trim().isEmpty())
+            duration = "0";
+            else duration = stringOfData[3].trim();
+
             query = "insert into mbad.proxout" +
-                    "(\"timestamp\", employee_id, zone) " +
-                    "values ('" + stringOfData[0] + ' ' + stringOfData[1] + "' ,'" + stringOfData[2] + "' ,'" + stringOfData[3] + "');";
+                    "(employee_id,zone,wd,duration,time) " +
+                    "values ('" + stringOfData[0].trim() + "','" + stringOfData[1].trim() + "' ,'" + stringOfData[2].trim() + "' ,'" + duration + "' ,'" + stringOfData[4].trim() +"');";
             try {
                 stmt.executeUpdate(query);
             } catch (SQLException e) {
@@ -52,7 +59,43 @@ public class InsertIntoTables {
         }
     }
 
-    public void insertIntoEmployee() throws Exception {
+    public void InsertIntoAvgDuration() throws Exception {
+        String query;
+        CSVReader reader = new CSVReader(new FileReader("data/avgDuration.csv"), ';');
+        reader.readNext();
+        stmt = con.createStatement();
+        String[] stringOfData;
+        String avgDuration, numberOfVisit, sko;
+        while ((stringOfData = reader.readNext()) != null) {
+            if (stringOfData[3].trim().isEmpty())
+                avgDuration = "0";
+            else avgDuration = stringOfData[3].trim();
+            if (stringOfData[4].trim().isEmpty())
+                numberOfVisit = "0";
+            else numberOfVisit = stringOfData[4].trim();
+            if (stringOfData[5].trim().isEmpty())
+                sko = "0";
+            else sko = stringOfData[5].trim();
+            Double skoByAvg;
+            if (Integer.parseInt(avgDuration)!= 0)
+            skoByAvg = Double.parseDouble(sko) / Double.parseDouble(avgDuration);
+            else
+            skoByAvg = 0.;
+            String formattedDouble = new DecimalFormat("#0.000").format(skoByAvg);
+            query = "insert into mbad.avgduration" +
+                    "(employee_id,zone,wd,avgDuration,numberofvisit,sko,sko_by_avg ) " +
+                    "values ('" + stringOfData[0].trim() + "','" + stringOfData[1].trim() + "' ,'" +
+                    stringOfData[2].trim() + "' ,'" + avgDuration + "' ,'" + numberOfVisit +"' ,'" + sko + "' ,'" +skoByAvg+"');";
+            try {
+                stmt.executeUpdate(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            //System.out.println(query);
+        }
+    }
+
+  /*  public void insertIntoEmployee() throws Exception {
         String query;
         CSVReader reader = new CSVReader(new FileReader("data/EmployeeList.csv"), ',');
         reader.readNext();
@@ -69,8 +112,8 @@ public class InsertIntoTables {
             }
         }
     }
-
-    public void insertIntoIdZone() throws Exception {
+*/
+    /*public void insertIntoIdZone() throws Exception {
         String query;
         CSVReader reader = new CSVReader(new FileReader("data/id_zone.csv"), ' ');
         stmt = con.createStatement();
@@ -87,7 +130,7 @@ public class InsertIntoTables {
             }
             i++;
         }
-    }
+    }*/
 
 
     public Connection closeConnect() throws Exception {
@@ -99,7 +142,7 @@ public class InsertIntoTables {
         return con;
     }
 
-    public void selectFromProxOut() throws Exception {
+  /*  public void selectFromProxOut() throws Exception {
         String query = "SELECT x.timestamp as Tstart, y.timestamp as Tend, (y.timestamp - x.timestamp) as duration, x.employee_id, x.zone as zone1, y.zone as zone2\n" +
                 " FROM mbad.proxout x \n" +
                 " join mbad.proxout y\n" +
@@ -146,7 +189,7 @@ public class InsertIntoTables {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+*/
 
     }
-}
+
