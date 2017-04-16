@@ -8,13 +8,13 @@ public class MBADApp {
         //graf g = new graf();
         InsertIntoTables s = new InsertIntoTables();
         s.Connetion();
-       // s.insertIntoProxOut();
-        s.InsertIntoAvgDuration();
+        //s.insertIntoProxOut();
+        //s.InsertIntoAvgDuration();
         //s.insertIntoEmployee();
         //s.insertIntoIdZone();
         //s.selectFromProxOut();
-        s.closeConnect();
-
+        //s.GetAvgDuration();
+        s.GetAvgTime();
         //g.NearestPath(0,4);
     }
 }
