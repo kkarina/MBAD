@@ -4,8 +4,7 @@ CREATE TABLE mbad.zone_id
   zone CHAR(15)
 );
 
-CREATE TABLE mbad.avgDuration
-(
+CREATE TABLE mbad.avgDuration(
   employee_id   CHAR(30),
   zone          CHAR(20),
   wd            CHAR(20),
@@ -66,11 +65,11 @@ BEGIN
                                                         z.sko_by_avg,
                                                         z.avgduration,
                                                         CASE
-                                                        WHEN p.duration <= z.avgduration AND z.sko_by_avg >= 0.15
+                                                        WHEN p.duration <= z.avgduration AND z.sko_by_avg >= 0.5
                                                           THEN p.number_of_sample * 10 + 1
-                                                        WHEN p.duration > z.avgduration AND z.sko_by_avg >= 0.15
+                                                        WHEN p.duration > z.avgduration AND z.sko_by_avg >= 0.5
                                                           THEN p.number_of_sample * 10 + 2
-                                                        WHEN z.sko_by_avg < 0.15
+                                                        WHEN z.sko_by_avg < 0.5
                                                           THEN p.number_of_sample
                                                         END AS new_number_of_sample
 
@@ -106,11 +105,11 @@ BEGIN
                                                         z.sko_by_avg,
                                                         z.avgTime,
                                                         CASE
-                                                        WHEN p.time <= z.avgTime AND z.sko_by_avg >= 0.15
+                                                        WHEN p.time <= z.avgTime AND z.sko_by_avg >= 0.2
                                                           THEN p.number_of_sample * 10 + 1
-                                                        WHEN p.time > z.avgTime AND z.sko_by_avg >= 0.15
+                                                        WHEN p.time > z.avgTime AND z.sko_by_avg >= 0.2
                                                           THEN p.number_of_sample * 10 + 2
-                                                        WHEN z.sko_by_avg < 0.15
+                                                        WHEN z.sko_by_avg < 0.2
                                                           THEN p.number_of_sample
                                                         END AS new_number_of_sample
 
@@ -133,6 +132,9 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+
+
 
 --удаление и вставка в таблицу avgtime
 DELETE FROM mbad.avgtime;
@@ -191,3 +193,7 @@ INSERT INTO mbad.avgduration (employee_id, zone, wd, avgduration, numberofvisit,
        number_of_sample
 
      FROM mbad.proxout) t;
+
+update proxout set number_of_sample = 1
+
+select count(*) from avgduration

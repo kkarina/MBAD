@@ -34,6 +34,13 @@ public class InsertIntoTables {
         return con;
     }
 
+    public void CloseConnection() throws SQLException {
+        rs.close();
+        stmt.close();
+        con.close();
+
+    }
+
     public void insertIntoProxOut() throws Exception {
         String query;
         CSVReader reader = new CSVReader(new FileReader("data/prox.csv"), ';');
@@ -48,8 +55,8 @@ public class InsertIntoTables {
             else duration = stringOfData[3].trim();
 
             query = "insert into mbad.proxout" +
-                    "(employee_id,zone,wd,duration,time) " +
-                    "values ('" + stringOfData[0].trim() + "','" + stringOfData[1].trim() + "' ,'" + stringOfData[2].trim() + "' ,'" + duration + "' ,'" + stringOfData[4].trim() + "');";
+                    "(employee_id,zone,wd,duration,time, number_of_sample) " +
+                    "values ('" + stringOfData[0].trim() + "','" + stringOfData[1].trim() + "' ,'" + stringOfData[2].trim() + "' ,'" + duration + "' ,'" + stringOfData[4].trim() + "', 1" + ");";
             try {
                 stmt.executeUpdate(query);
             } catch (SQLException e) {
@@ -138,7 +145,7 @@ public class InsertIntoTables {
         rs.getString(1);
         int k = 1;
         double i = Double.parseDouble(rs.getString(1));
-        while (i >= 0.15) {
+        while (i >= 0.5) {
             stmt.execute("SELECT mbad.get_number_of_sample();" +
                     " DELETE FROM mbad.avgduration;\n" +
                     "  INSERT INTO mbad.avgduration (employee_id, zone, wd, avgduration, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
@@ -173,13 +180,11 @@ public class InsertIntoTables {
             rs.next();
             i = Double.parseDouble(rs.getString(1));
         }
-        rs.close();
-        stmt.close();
-        con.close();
+
 
     }
 
-    public void GetAvgTime() throws Exception{
+    public void GetAvgTime() throws Exception {
         String query1, query2;
         st = con.createStatement();
         stmt = con.createStatement();
@@ -222,7 +227,7 @@ public class InsertIntoTables {
         rs.getString(1);
         int k = 1;
         double i = Double.parseDouble(rs.getString(1));
-        while (i >= 0.15) {
+        while (i >= 0.2) {
             stmt.execute("SELECT mbad.get_number_of_sample_by_time();" +
                     " DELETE FROM mbad.avgtime;\n" +
                     "  INSERT INTO mbad.avgtime (employee_id, zone, wd, avgtime, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +

@@ -13,7 +13,7 @@ public class MBADApp {
         //s.insertIntoEmployee();
         //s.insertIntoIdZone();
         //s.selectFromProxOut();
-        //s.GetAvgDuration();
+        s.GetAvgDuration();
         s.GetAvgTime();
         //g.NearestPath(0,4);
     }
