@@ -1,3 +1,7 @@
+create table zone_office (
+zone char(20),
+office char(4)
+)
 CREATE TABLE mbad.zone_id
 (
   id   INTEGER,
@@ -27,6 +31,20 @@ CREATE TABLE mbad.avgtime
   number_of_sample int
 );
 
+create table mbad.simple_motifs
+( employee_id char(30),
+  zone char(20),
+  wd char(20),
+  number_of_sample int,
+  avgduration int,
+  numberofvisit int,
+  duration_sko int,
+  duration_sko_by_avg real,
+  avgtime int,
+  time_sko int,
+  time_sko_by_avg real
+);
+
 CREATE TABLE mbad.proxout
 (
   employee_id      CHAR(30),
@@ -41,7 +59,8 @@ CREATE TABLE mbad.employee
 (
   id         CHAR(30),
   department CHAR(50),
-  office     INTEGER
+  office     char(10),
+  zone       char (20)
 );
 
 CREATE TABLE mbad.sequences
@@ -193,7 +212,30 @@ INSERT INTO mbad.avgduration (employee_id, zone, wd, avgduration, numberofvisit,
        number_of_sample
 
      FROM mbad.proxout) t;
-
+--обновление proxout
 update proxout set number_of_sample = 1
 
-select count(*) from avgduration
+--объединение avgduration c avgtime
+insert into mbad.simple_motifs (employee_id, zone, wd, number_of_sample, avgduration,
+                               numberofvisit, duration_sko, duration_sko_by_avg,
+                               avgtime, time_sko, time_sko_by_avg)
+select d.employee_id, d.zone, d.wd, d.number_of_sample, d.avgduration, d.numberofvisit, d.sko as duration_sko,
+       d.sko_by_avg as duration_sko_by_avg, t.avgtime, t.sko as time_sko, t.sko_by_avg as time_sko_by_avg
+from avgduration d left join avgtime t
+on d.employee_id = t.employee_id
+and d."zone" = t."zone"
+and d.number_of_sample = t.number_of_sample
+and  d.wd = t.wd
+and d.numberofvisit = t.numberofvisit;
+
+update simple_motifs s set motif = 'пришел на рабочее место'
+ from (select "zone", "id"
+                from mbad.employee)t
+where s.zone = t.zone and
+      t.id = substring(s.employee_id from '[A-Za-z]+')
+      and avgduration > 3600
+
+update simple_motifs set motif = 'ушел с работы'
+    where avgduration = 0
+        and numberofvisit = 1
+        and zone = '1-1'

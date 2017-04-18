@@ -25,19 +25,42 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501">
-        <schema name="information_schema" object-types="function" />
-        <schema name="mbad" object-types="argument, column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function" />
+        <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
+        <schema name="pg_catalog" object-types="function, table, view" />
         <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="8a750363-dc95-446b-b7b5-eeac77cf1501">
-      <console name="Connection" type="STANDARD" />
+      <console name="Connection" type="STANDARD"><![CDATA[alter table mbad.employee
+add column "zone" char(20)
+
+alter table mbad.employee
+alter column "zone" type char(20)
+
+alter table mbad.simple_motifs
+add column "motif" char (30)]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.simple_motifs" active-filter-id="EMPTY_FILTER">
+      <filter id="8b76597c-61f5-4b75-8414-2d24f161e2aa" name="Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="wd" operator="=" value="Monday" active="true" />
+      </filter>
+      <filter id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70" name="1-1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="zone" operator="=" value="1-1" active="true" />
+      </filter>
+      <filter id="c2b0c18e-14a8-45b4-a171-1b168ac60fff" name="nbasham001" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="employee_id" operator="=" value="nbasham001" active="true" />
+      </filter>
+      <filter id="4f7eaaf6-ee8a-45c3-ac3a-c55e1e06ab3d" name="пришел на рабочее место" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="motif" operator="=" value="пришел на рабочее место" active="true" />
+      </filter>
+    </filter-list>
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.sequences" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.zone_office" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.employee" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.proxout" active-filter-id="6bc414dc-1261-402d-92cf-6b889b694721">
       <filter id="6bc414dc-1261-402d-92cf-6b889b694721" name="acalzas001 &amp; 1-1 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="employee_id" operator="=" value="acalzas001" active="true" />
@@ -45,23 +68,26 @@
         <condition column="wd" operator="=" value="Monday" active="true" />
       </filter>
     </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgtime" active-filter-id="EMPTY_FILTER">
-      <filter id="9597eac2-da45-40c4-9ce3-b8791303c3f0" name="acalzas001 &amp; 1-1 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgtime" active-filter-id="9597eac2-da45-40c4-9ce3-b8791303c3f0">
+      <filter id="9597eac2-da45-40c4-9ce3-b8791303c3f0" name="acalzas001 &amp; 1-2 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="employee_id" operator="=" value="acalzas001" active="true" />
-        <condition column="zone" operator="=" value="1-1" active="true" />
+        <condition column="zone" operator="=" value="1-2" active="true" />
         <condition column="wd" operator="=" value="Monday" active="true" />
       </filter>
     </filter-list>
     <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgduration" active-filter-id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565">
-      <filter id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565" name="acalzas001 &amp; 1-1 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
+      <filter id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565" name="acalzas001 &amp; 1-2 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="employee_id" operator="=" value="acalzas001" active="true" />
-        <condition column="zone" operator="=" value="1-1" active="true" />
+        <condition column="zone" operator="=" value="1-2" active="true" />
         <condition column="wd" operator="=" value="Monday" active="true" />
       </filter>
     </filter-list>
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.zone_id" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
-    <last-used-providers />
+    <last-used-providers>
+      <object-type object-type="TABLE" editor-provider="DATA" />
+    </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
     <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="mbad" />
