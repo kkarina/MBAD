@@ -25,8 +25,10 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501">
+        <schema name="information_schema" object-types="function, table, view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function, table, view" />
+        <schema name="pg_catalog" object-types="argument, function, sequence, table, view" />
+        <schema name="pg_temp_1" object-types="function, sequence, table, view" />
         <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
@@ -40,16 +42,25 @@ alter table mbad.employee
 alter column "zone" type char(20)
 
 alter table mbad.simple_motifs
-add column "motif" char (30)]]></console>
+add column "motif" char (30);
+
+alter table mbad.proxout_mc2
+drop column  type
+
+drop table mbad.proxout_mc2
+delete from mbad.proxout_mc2
+
+create table mbad.proxout_mc2
+("timestamp" timestamp, "type" char(20), prox_id char(30), floor char (20), zone char (20))]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.simple_motifs" active-filter-id="EMPTY_FILTER">
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.simple_motifs" active-filter-id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70">
       <filter id="8b76597c-61f5-4b75-8414-2d24f161e2aa" name="Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="wd" operator="=" value="Monday" active="true" />
       </filter>
-      <filter id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70" name="1-1" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="zone" operator="=" value="1-1" active="true" />
+      <filter id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70" name="2-4" temporary="false" custom-name="true" type="basic" join-type="AND">
+        <condition column="zone" operator="=" value="2-4" active="true" />
       </filter>
       <filter id="c2b0c18e-14a8-45b4-a171-1b168ac60fff" name="nbasham001" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="employee_id" operator="=" value="nbasham001" active="true" />
@@ -75,6 +86,11 @@ add column "motif" char (30)]]></console>
         <condition column="wd" operator="=" value="Monday" active="true" />
       </filter>
     </filter-list>
+    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.proxout_mc2" active-filter-id="EMPTY_FILTER">
+      <filter id="b056b053-ad57-4add-b735-704311b697a7" name="Server Room" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="zone" operator="=" value="Server Room" active="true" />
+      </filter>
+    </filter-list>
     <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgduration" active-filter-id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565">
       <filter id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565" name="acalzas001 &amp; 1-2 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="employee_id" operator="=" value="acalzas001" active="true" />
@@ -90,8 +106,10 @@ add column "motif" char (30)]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="mbad" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />

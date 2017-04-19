@@ -31,6 +31,9 @@ CREATE TABLE mbad.avgtime
   number_of_sample int
 );
 
+create table logs
+(employee_id char (30), "date" date, "time" int, duration int, zone char(30))
+
 create table mbad.simple_motifs
 ( employee_id char(30),
   zone char(20),
@@ -233,9 +236,12 @@ update simple_motifs s set motif = 'пришел на рабочее место'
                 from mbad.employee)t
 where s.zone = t.zone and
       t.id = substring(s.employee_id from '[A-Za-z]+')
-      and avgduration > 3600
+      and avgduration > 3600;
 
-update simple_motifs set motif = 'ушел с работы'
-    where avgduration = 0
-        and numberofvisit = 1
-        and zone = '1-1'
+
+copy mbad.proxout_mc2( "timestamp", type, prox_id, floor, zone)
+from 'c://proxOut-MC2.csv'
+with DELIMITER   ','
+CSV  HEADER;
+
+count (8*) f
