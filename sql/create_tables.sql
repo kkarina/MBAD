@@ -1,3 +1,24 @@
+--копировать таблицу simple_motifs
+insert into simple_motifs_test
+( employee_id,  zone,  wd,  number_of_sample,
+  avgduration,  numberofvisit,  duration_sko,
+  avgtime,time_sko, motif,
+  "cid",  cit, department)
+  select employee_id ,
+  zone ,
+  wd ,
+  number_of_sample ,
+  avgduration ,
+  numberofvisit,
+  duration_sko ,
+  avgtime,
+  time_sko ,
+  motif,
+   "cid",
+   cit,
+   department
+   from mbad.simple_motifs
+
 create table zone_office (
 zone char(20),
 office char(4)
@@ -33,6 +54,21 @@ CREATE TABLE mbad.avgtime
 
 create table logs
 (employee_id char (30), "date" date, "time" int, duration int, zone char(30))
+
+--вставка в logs
+insert into mbad.logs (employee_id, zone, date, time, duration)
+select prox_id,
+	   "floor"||'-'||substring ("zone" from 2) as "zone",
+       ("timestamp")::date as "date",
+       date_part  ('hour',"timestamp")*3600+date_part  ('minute', "timestamp")*60+date_part ('second', "timestamp") as "time",
+       extract(epoch from t.next_time - t.timestamp) as duration
+from
+(
+select p.*,
+ LEAD("timestamp") OVER(partition by prox_id ORDER BY "timestamp") next_time
+from mbad.proxout_mc2 p
+)t
+--конец вставки в logs
 
 create table mbad.simple_motifs
 ( employee_id char(30),
@@ -74,6 +110,7 @@ CREATE TABLE mbad.sequences
   sequence    CHAR(255),
   duration    INTERVAL
 );
+
 --разбиение по длительности
 CREATE OR REPLACE FUNCTION mbad.get_number_of_sample()
   RETURNS INT4
@@ -114,6 +151,9 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+
+
 --разбиение по времени
 CREATE OR REPLACE FUNCTION mbad.get_number_of_sample_by_time()
   RETURNS INT4
@@ -154,9 +194,6 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
-
-
-
 
 --удаление и вставка в таблицу avgtime
 DELETE FROM mbad.avgtime;
@@ -231,17 +268,88 @@ and d.number_of_sample = t.number_of_sample
 and  d.wd = t.wd
 and d.numberofvisit = t.numberofvisit;
 
-update simple_motifs s set motif = 'пришел на рабочее место'
- from (select "zone", "id"
-                from mbad.employee)t
-where s.zone = t.zone and
-      t.id = substring(s.employee_id from '[A-Za-z]+')
-      and avgduration > 3600;
 
-
+--импорт в proxout_mc2
 copy mbad.proxout_mc2( "timestamp", type, prox_id, floor, zone)
 from 'c://proxOut-MC2.csv'
 with DELIMITER   ','
 CSV  HEADER;
 
-count (8*) f
+
+--доверительный интервал
+update mbad.simple_motifs
+set "cit" = 0.475 * time_sko/ sqrt (numberofvisit)
+--пришел на рабочее место
+update simple_motifs_test set motif = 'пришел на рабочее место'
+where zone =  office_zone
+      and avgduration > 1800
+      and motif is null;
+--зашел в лифт
+update mbad.simple_motifs
+set motif = 'зашел в лифт'
+where (zone = '1-4' or zone = '2-4' or zone = '3-4') and avgduration >2;
+--вышел из лифта
+update mbad.simple_motifs
+set motif = 'вышел из лифта'
+where (zone = '1-4' or zone = '2-4' or zone = '3-4') and avgduration =2;
+--ушел с работы(последняя запись в логах
+update mbad.simple_motifs
+set motif = 'ушел с работы'
+where zone = '1-1' and avgduration = 0
+--сквозные зоны
+update mbad.simple_motifs
+set motif = 'прошел через '||"zone"
+where ("zone"!= '1-4' or "zone" != '2-4' or "zone" != '3-4') and avgduration>0 and avgduration < 130
+--зашел в гастроном
+update mbad.simple_motifs
+set motif = 'зашел в гастроном'
+where "zone" = '1-2'
+--пришел на работу
+update mbad.simple_motifs sm
+set motif = 'пришел на работу'
+from (
+        select employee_id, wd, min(avgtime) as avgtime
+        from mbad.simple_motifs
+        where "zone" = '1-1'
+        group by employee_id, wd
+     )t
+where sm.zone = '1-1'
+      and sm.employee_id = t.employee_id
+      and sm.wd = t.wd
+      and sm.avgtime = t.avgtime
+--зашел к коллеге
+update simple_motifs_test s set motif = 'зашел к коллеге'
+from (
+        select "id", zone, department
+        from mbad.employee
+     )x
+where s.employee_id!=x."id"
+  and s.department = x.department
+  and s.zone = x.zone
+    and avgduration > 130
+    and avgduration < 7200
+    and motif!='пришел на рабочее место' or motif is null
+
+update simple_motifs_test
+    set motif = 'зашел в уборную'
+    where ("zone" = '3-2' or "zone"= '2-7' or "zone"= '1-1')
+    and avgduration >=300
+    and avgduration <=900
+    and motif is null
+
+select * from simple_motifs_test
+where zone = '1-5' or zone = '1-6' or "zone" = '1-3'
+or zone  = '2-1' or "zone" = '2-6' or zone = '3-2'
+
+
+--указание номера офиса сотрудника
+update simple_motifs_test sm
+set  office_zone = t.zone
+from (select "id", "zone"
+        from employee)t
+      where t.id =   substring(sm.employee_id from '[A-Za-z]+')
+
+delete from simple_motifs_test
+where motif = 'зашел к коллеге'
+
+rollback

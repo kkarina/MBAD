@@ -24,24 +24,23 @@
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes>
-      <connection connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501">
-        <schema name="information_schema" object-types="function, table, view" />
+      <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
+        <schema name="information_schema" object-types="view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="argument, function, sequence, table, view" />
-        <schema name="pg_temp_1" object-types="function, sequence, table, view" />
+        <schema name="pg_catalog" object-types="function, table, view" />
         <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="8a750363-dc95-446b-b7b5-eeac77cf1501">
+    <connection id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
       <console name="Connection" type="STANDARD"><![CDATA[alter table mbad.employee
 add column "zone" char(20)
 
 alter table mbad.employee
 alter column "zone" type char(20)
 
-alter table mbad.simple_motifs
+alter table mbad.simple_motifs_test
 add column "motif" char (30);
 
 alter table mbad.proxout_mc2
@@ -51,54 +50,26 @@ drop table mbad.proxout_mc2
 delete from mbad.proxout_mc2
 
 create table mbad.proxout_mc2
-("timestamp" timestamp, "type" char(20), prox_id char(30), floor char (20), zone char (20))]]></console>
+("timestamp" timestamp, "type" char(20), prox_id char(30), floor char (20), zone char (20))
+
+alter table mbad.simple_motifs_test
+add column cit real;
+
+alter table mbad.simple_motifs_test
+alter column cid type real;
+
+
+alter table mbad.simple_motifs
+add column "office_zone"  char(30)]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.simple_motifs" active-filter-id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70">
-      <filter id="8b76597c-61f5-4b75-8414-2d24f161e2aa" name="Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="wd" operator="=" value="Monday" active="true" />
-      </filter>
-      <filter id="7ce9b10b-c4a4-4cf9-b91b-24abbd8abf70" name="2-4" temporary="false" custom-name="true" type="basic" join-type="AND">
-        <condition column="zone" operator="=" value="2-4" active="true" />
-      </filter>
-      <filter id="c2b0c18e-14a8-45b4-a171-1b168ac60fff" name="nbasham001" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="employee_id" operator="=" value="nbasham001" active="true" />
-      </filter>
-      <filter id="4f7eaaf6-ee8a-45c3-ac3a-c55e1e06ab3d" name="пришел на рабочее место" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="motif" operator="=" value="пришел на рабочее место" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.sequences" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.zone_office" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.employee" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.proxout" active-filter-id="6bc414dc-1261-402d-92cf-6b889b694721">
-      <filter id="6bc414dc-1261-402d-92cf-6b889b694721" name="acalzas001 &amp; 1-1 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="employee_id" operator="=" value="acalzas001" active="true" />
-        <condition column="zone" operator="=" value="1-1" active="true" />
-        <condition column="wd" operator="=" value="Monday" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgtime" active-filter-id="9597eac2-da45-40c4-9ce3-b8791303c3f0">
-      <filter id="9597eac2-da45-40c4-9ce3-b8791303c3f0" name="acalzas001 &amp; 1-2 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="employee_id" operator="=" value="acalzas001" active="true" />
-        <condition column="zone" operator="=" value="1-2" active="true" />
-        <condition column="wd" operator="=" value="Monday" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.proxout_mc2" active-filter-id="EMPTY_FILTER">
-      <filter id="b056b053-ad57-4add-b735-704311b697a7" name="Server Room" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="zone" operator="=" value="Server Room" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.avgduration" active-filter-id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565">
-      <filter id="5e3722e3-c6ca-4fe7-ba03-23f83e3ac565" name="acalzas001 &amp; 1-2 &amp; Monday" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="employee_id" operator="=" value="acalzas001" active="true" />
-        <condition column="zone" operator="=" value="1-2" active="true" />
-        <condition column="wd" operator="=" value="Monday" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" dataset="mbad.zone_id" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.simple_motifs" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.simple_motifs_test" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.zone_office" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.employee" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.proxout" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.logs" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers>
@@ -106,20 +77,17 @@ create table mbad.proxout_mc2
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_zone_office.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
     <execution-history>
       <group-entries value="true" />
-      <execution-inputs>
-        <execution-input execution-timeout="30" debug-execution-timeout="600" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" object-ref="[schema/function][mbad/get_number_of_sample]" execution-schema="mbad" use-pool-connection="true" commit-after-execution="true" enable-logging="false">
-          <argument-list />
-        </execution-input>
-      </execution-inputs>
+      <execution-inputs />
       <selection connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" object-ref="[schema/function][mbad/get_number_of_sample]" />
     </execution-history>
     <argument-values-cache />
@@ -138,7 +106,7 @@ create table mbad.proxout_mc2
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="8a750363-dc95-446b-b7b5-eeac77cf1501" active="true">
+      <connection id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" active="true">
         <database>
           <name value="Connection" />
           <description value="" />
@@ -158,7 +126,7 @@ create table mbad.proxout_mc2
           <password value="MTIz" />
         </database>
         <properties>
-          <auto-commit value="true" />
+          <auto-commit value="false" />
         </properties>
         <ssh-settings>
           <active value="false" />
@@ -173,10 +141,10 @@ create table mbad.proxout_mc2
         <details>
           <charset value="UTF-8" />
           <ddl-file-binding value="true" />
-          <database-logging value="true" />
+          <database-logging value="false" />
           <connect-automatically value="true" />
           <restore-workspace value="true" />
-          <environment-type value="development" />
+          <environment-type value="default" />
           <idle-time-to-disconnect value="30" />
           <password-expiry-time value="10" />
           <max-connection-pool-size value="7" />
