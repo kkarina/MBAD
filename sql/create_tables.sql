@@ -349,7 +349,7 @@ from (select "id", "zone"
         from employee)t
       where t.id =   substring(sm.employee_id from '[A-Za-z]+')
 
-delete from simple_motifs_test
+update simple_motifs_test set motif = null
 where motif = 'зашел к коллеге'
 
 rollback

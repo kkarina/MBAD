@@ -27,8 +27,8 @@
       <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
         <schema name="information_schema" object-types="view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function, table, view" />
-        <schema name="public" object-types="function, table, view" />
+        <schema name="pg_catalog" object-types="function, sequence, table, view" />
+        <schema name="public" object-types="function, sequence, table, view" />
       </connection>
     </loaded-nodes>
   </component>
