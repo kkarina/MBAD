@@ -2,11 +2,11 @@ UPDATE mbad.employee x
 SET zone = t.zone
 FROM (SELECT *
       FROM mbad.zone_office) t
-WHERE x.office = t.office;
+WHERE substring(x.office FROM 2) =t.office;
 
-UPDATE mbad.proxout_mc2
-SET "zone" = 'Server'
-WHERE "zone" = ' Server Room';
+UPDATE mbad.logs
+SET "zone" = ' 3-Server'
+WHERE "zone" = ' 3-Server Room';
 
 SELECT *
 FROM mbad.proxout_mc2

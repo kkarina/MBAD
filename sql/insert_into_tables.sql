@@ -148,27 +148,27 @@ INSERT INTO simple_motifs_test
     "cid",
     cit,
     department
-  FROM mbad.simple_motifs
-       --конец
-       --вставка в logs
-       INSERT INTO mbad.logs (employee_id, ZONE, DATE, TIME, duration)
-SELECT
-  prox_id,
-  "floor" || '-' || substring("zone" FROM 2)                                                             AS "zone",
-  ("timestamp") :: DATE                                                                                  AS "date",
-  date_part('hour', "timestamp") * 3600 + date_part('minute', "timestamp") * 60 + date_part('second',
-                                                                                            "timestamp") AS "time",
-  extract(EPOCH FROM t.next_time -
-                     t.timestamp)                                                                        AS duration
-FROM
-  (
-    SELECT
-      p.*,
-      LEAD("timestamp")
-      OVER (PARTITION BY prox_id
-        ORDER BY "timestamp") next_time
-    FROM mbad.proxout_mc2 p
-  ) t;
+  FROM mbad.simple_motifs;
+--конец
+--вставка в logs
+INSERT INTO mbad.logs (employee_id, ZONE, DATE, TIME, duration)
+  SELECT
+    prox_id,
+    "floor" || '-' || substring("zone" FROM 2)                                                             AS "zone",
+    ("timestamp") :: DATE                                                                                  AS "date",
+    date_part('hour', "timestamp") * 3600 + date_part('minute', "timestamp") * 60 + date_part('second',
+                                                                                              "timestamp") AS "time",
+    extract(EPOCH FROM t.next_time -
+                       t.timestamp)                                                                        AS duration
+  FROM
+    (
+      SELECT
+        p.*,
+        LEAD("timestamp")
+        OVER (PARTITION BY prox_id
+          ORDER BY "timestamp") next_time
+      FROM mbad.proxout_mc2 p
+    ) t;
 --конец вставки в logs
 
 --объединение avgduration c avgtime
@@ -181,9 +181,9 @@ INSERT INTO mbad.simple_motifs (employee_id, zone, wd, number_of_sample, avgdura
     d.number_of_sample,
     d.avgduration,
     d.numberofvisit,
-    d.sko        AS duration_sko,
+    d.sko AS duration_sko,
     t.avgtime,
-    t.sko        AS time_sko
+    t.sko AS time_sko
   FROM mbad.avgduration d LEFT JOIN mbad.avgtime t
       ON d.employee_id = t.employee_id
          AND d."zone" = t."zone"
@@ -199,7 +199,6 @@ CSV HEADER;
 
 
 COPY mbad.employee (id, department, office)
-    from 'c://EmployeeList.csv'
+FROM 'c://EmployeeList.csv'
 WITH DELIMITER ','
 CSV HEADER;
-
