@@ -1,27 +1,34 @@
-update mbad.employee x set zone = t.zone
-from (select * from mbad.zone_office )t
-where x.office = t.office;
+UPDATE mbad.employee x
+SET zone = t.zone
+FROM (SELECT *
+      FROM mbad.zone_office) t
+WHERE x.office = t.office;
 
-update mbad.proxout_mc2  set "zone" = 'Server'
-where "zone" = ' Server Room'
+UPDATE mbad.proxout_mc2
+SET "zone" = 'Server'
+WHERE "zone" = ' Server Room';
 
-select * from mbad.proxout_mc2
+SELECT *
+FROM mbad.proxout_mc2
 
-select *
-from mbad.logs
-order by duration
+SELECT *
+FROM mbad.logs
+ORDER BY duration;
 
-update mbad.logs set duration = 0
-where duration is null
+UPDATE mbad.logs
+SET duration = 0
+WHERE duration IS NULL;
 
-delete  from mbad.logs
+DELETE FROM mbad.logs;
+UPDATE mbad.logs
+SET  zone ='3-Server' WHERE zone = ' 3-erver';
+SELECT count(*)
+FROM mbad.logs
+WHERE duration IS NULL
 
-select count (*)
-from mbad.logs
-where duration is null
 
+DELETE FROM mbad.simple_motifs
+WHERE numberofvisit = 1 AND avgduration != 0
 
-delete from mbad.simple_motifs
-where numberofvisit = 1 and avgduration !=0
-
-select count (*) from mbad.simple_motifs
+SELECT count(*)
+FROM mbad.simple_motifs
