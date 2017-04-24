@@ -10,13 +10,13 @@
       <create-header value="true" />
       <quote-values-containing-separator value="false" />
       <quote-all-values value="false" />
-      <value-separator value="" />
-      <file-name value="SIMPLE_MOTIFS_TEST.xls" />
-      <file-location value="C:\Users\Afashokova\IdeaProjects\MBAD" />
-      <scope value="SELECTION" />
+      <value-separator value="," />
+      <file-name value="SIMPLE_MOTIFS_TEST.csv" />
+      <file-location value="C:\Users\Afashokova\IdeaProjects\MBAD\data" />
+      <scope value="GLOBAL" />
       <destination value="FILE" />
-      <format value="EXCEL" />
-      <charset value="windows-1251" />
+      <format value="CSV" />
+      <charset value="UTF-8" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -60,7 +60,9 @@ alter column cid type real;
 
 
 alter table mbad.simple_motifs
-add column "office_zone"  char(30)]]></console>
+add column "office_zone"  char(30);
+
+select * from mbad.simple_motifs_test]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">

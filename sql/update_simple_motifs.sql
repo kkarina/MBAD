@@ -2,9 +2,21 @@
 UPDATE mbad.simple_motifs_test
 SET "cit" = 0.475 * time_sko / sqrt(numberofvisit);
 
+UPDATE mbad.simple_motifs_test
+SET "cid" = 0.475 * duration_sko / sqrt(numberofvisit);
+
+UPDATE mbad.simple_motifs
+SET "cid" = 0.475 * duration_sko / sqrt(numberofvisit);
+
 UPDATE mbad.simple_motifs
 SET "cit" = 0.475 * time_sko / sqrt(numberofvisit);
 --пришел на рабочее место
+UPDATE simple_motifs_test
+SET motif = 'пришел на рабочее место'
+WHERE zone = office_zone
+      AND avgduration > 60
+      AND motif IS NULL;
+
 UPDATE simple_motifs_test
 SET motif = 'пришел на рабочее место'
 WHERE zone = office_zone
@@ -40,6 +52,9 @@ UPDATE mbad.simple_motifs_test
 SET motif = 'ушел с работы'
 WHERE zone = '1-1' AND avgduration >= 28800;
 
+UPDATE mbad.simple_motifs
+SET motif = 'ушел с работы'
+WHERE zone = '1-1' AND avgduration >= 28800;
 --сквозные зоны
 UPDATE mbad.simple_motifs
 SET motif = 'прошел через ' || "zone"
@@ -199,7 +214,7 @@ select distinct zone, count(zone)
 
 select *
 from mbad.simple_motifs_test
-where motif is ;
+where motif is null;
 
 
 select *
