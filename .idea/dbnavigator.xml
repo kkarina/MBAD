@@ -8,12 +8,12 @@
   <component name="DBNavigator.Project.DataExportManager">
     <export-instructions>
       <create-header value="true" />
-      <quote-values-containing-separator value="true" />
+      <quote-values-containing-separator value="false" />
       <quote-all-values value="false" />
       <value-separator value="" />
-      <file-name value="" />
-      <file-location value="" />
-      <scope value="GLOBAL" />
+      <file-name value="SIMPLE_MOTIFS_TEST.xls" />
+      <file-location value="C:\Users\Afashokova\IdeaProjects\MBAD" />
+      <scope value="SELECTION" />
       <destination value="FILE" />
       <format value="EXCEL" />
       <charset value="windows-1251" />
@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
-        <schema name="information_schema" object-types="view" />
+        <schema name="information_schema" object-types="function, sequence, table, view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
         <schema name="pg_catalog" object-types="function, sequence, table, view" />
         <schema name="public" object-types="function, sequence, table, view" />
@@ -69,7 +69,11 @@ add column "office_zone"  char(30)]]></console>
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.zone_office" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.employee" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.proxout" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.logs" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.logs" active-filter-id="EMPTY_FILTER">
+      <filter id="a07deba2-32b2-4cd6-8434-e9968d4f1d23" name=" 1-5" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="zone" operator="=" value=" 1-5" active="true" />
+      </filter>
+    </filter-list>
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers>
@@ -77,11 +81,12 @@ add column "office_zone"  char(30)]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_zone_office.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />

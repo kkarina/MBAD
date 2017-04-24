@@ -238,3 +238,4 @@ CREATE TABLE mbad.proxout_mc2 (
   floor       CHAR(20),
   zone        CHAR(20)
 );
+

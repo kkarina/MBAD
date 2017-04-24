@@ -32,3 +32,9 @@ WHERE numberofvisit = 1 AND avgduration != 0
 
 SELECT count(*)
 FROM mbad.simple_motifs
+
+update logs
+set "zone" = trim(zone)
+
+update logs
+set employee_id = trim(employee_id)

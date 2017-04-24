@@ -133,7 +133,7 @@ INSERT INTO simple_motifs_test
 (employee_id, zone, wd, number_of_sample,
  avgduration, numberofvisit, duration_sko,
  avgtime, time_sko, motif,
- "cid", cit, department)
+ "cid", cit, department, office_zone)
   SELECT
     employee_id,
     zone,
@@ -147,7 +147,7 @@ INSERT INTO simple_motifs_test
     motif,
     "cid",
     cit,
-    department
+    department, office_zone
   FROM mbad.simple_motifs;
 --конец
 --вставка в logs
