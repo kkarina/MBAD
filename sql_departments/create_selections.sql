@@ -9,7 +9,7 @@ SET department = t.department
 FROM (SELECT
         "id",
         department
-      FROM employee) t
+      FROM mbad.employee) t
 WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
 --удаление и вставка из avgduration_dep
 DELETE FROM mbad.avgduration_dep;
@@ -91,13 +91,13 @@ BEGIN
                                                         END AS new_number_of_sample
 
                                                       FROM mbad.proxout p LEFT JOIN (SELECT *
-                                                                                     FROM mbad.avgduration
+                                                                                     FROM mbad.avgduration_dep
                                                                                     ) z
                                                           ON p.department = z.department
                                                              AND p.zone = z.zone
                                                              AND p.wd = z.wd
                                                              AND p.number_of_sample = z.number_of_sample) a
-  WHERE pr.department = a.depatrtment
+  WHERE pr.department = a.department
         AND pr.zone = a.zone
         AND pr.wd = a.wd
         AND pr.number_of_sample = a.number_of_sample
@@ -108,6 +108,6 @@ BEGIN
   RETURN 1;
 END;
 $BODY$
-language PLPGSQL
+language PLPGSQL;
 
-select get_number_of_sample_dep()
+select mbad.get_number_of_sample_dep();
