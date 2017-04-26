@@ -16,7 +16,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="CSV" />
-      <charset value="UTF-8" />
+      <charset value="windows-1251" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -27,8 +27,8 @@
       <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
         <schema name="information_schema" object-types="function, sequence, table, view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function, sequence, table, view" />
-        <schema name="public" object-types="function, sequence, table, view" />
+        <schema name="pg_catalog" object-types="argument, function, sequence, table, view" />
+        <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
   </component>
@@ -62,7 +62,8 @@ alter column cid type real;
 alter table mbad.simple_motifs
 add column "office_zone"  char(30);
 
-select * from mbad.simple_motifs_test]]></console>
+select * from mbad.simple_motifs
+order by employee_id, wd, avgtime]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
@@ -83,12 +84,13 @@ select * from mbad.simple_motifs_test]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_logs_motif.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs_test.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
@@ -498,7 +500,7 @@ select * from mbad.simple_motifs_test]]></console>
     </code-completion-settings>
     <execution-engine-settings>
       <statement-execution>
-        <fetch-block-size value="100" />
+        <fetch-block-size value="10000" />
         <execution-timeout value="20" />
         <debug-execution-timeout value="600" />
         <focus-result value="false" />

@@ -30,7 +30,7 @@ WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
 UPDATE simple_motifs
 SET motif = 'пришел на рабочее место'
 WHERE zone = office_zone
-      AND avgduration > 60
+      AND avgduration > 600
       AND motif IS NULL;
 
 --зашел в лифт
@@ -55,9 +55,9 @@ WHERE zone = '1-1' AND avgduration >= 28800;
 
 --сквозные зоны
 UPDATE mbad.simple_motifs
-SET motif = 'прошел через ' || "zone"
+SET motif = 'сквозная зона'
 WHERE
-  ("zone" != '1-4' AND "zone" != '2-4' AND "zone" != '3-4') AND avgduration > 0 AND avgduration < 130 AND motif IS NULL;
+  avgduration >= 0 AND avgduration <=100 AND motif IS NULL;
 
 --зашел в гастроном
 UPDATE mbad.simple_motifs
@@ -94,7 +94,7 @@ FROM (
 WHERE s.employee_id != x."id"
       AND s.department = x.department
       AND s.zone = x.zone
-      AND avgduration > 59
+      AND avgduration > 60
       AND avgduration < 7200
       AND motif IS NULL
       AND s.zone != s.office_zone;
@@ -103,9 +103,8 @@ WHERE s.employee_id != x."id"
 UPDATE simple_motifs
 SET motif = 'зашел в уборную'
 WHERE ("zone" = '3-2' OR "zone" = '2-7' OR "zone" = '1-1')
-      AND avgduration >= 120
-      AND avgduration <= 900
-      AND motif IS NULL;
+      AND avgduration >= 90
+      AND avgduration <= 900;
 
 --митинг в зоне 1-6
 UPDATE simple_motifs
@@ -164,13 +163,21 @@ WHERE "zone" = '2-1'
 --Loading
 UPDATE mbad.simple_motifs
 SET motif = 'Loading'
-WHERE zone = '1-3' AND avgduration > 19330 AND simple_motifs.motif ISNULL;
+WHERE zone = '1-3' AND avgduration > 19330 AND simple_motifs.motif IS NULL;
 
 --null
-UPDATE mbad.simple_motifs
+UPDATE mbad.simple_motifs ss
     SET motif = '0'
-WHERE motif is NULL ;
+    WHERE ss.motif is null;
+
+--разброс прохождения сквозные зон
+update mbad.simple_motifs set cid = 40
+where motif = 'сквозная зона' or motif = 'пришел  на работу'
 
 
-select * FROM mbad.simple_motifs
-where motif = '0'
+--разброс прихода на работу
+
+select *
+from mbad.simple_motifs
+
+

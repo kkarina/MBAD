@@ -39,7 +39,20 @@ set employee_id = trim(employee_id);
 
 UPDATE logs SET duration = 0
 WHERE duration is NULL ;
+
 alter TABLE mbad.logs
     ADD COLUMN wd CHAR(20);
 
+
+alter table mbad.logs
+add column department char(30)
+
 UPDATE logs set wd = to_char("date", 'Day');
+
+update mbad.logs sm
+SET department = t.department
+FROM (SELECT
+        "id",
+        department
+      FROM employee) t
+WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
