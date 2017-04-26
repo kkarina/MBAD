@@ -22,19 +22,24 @@ WHERE duration IS NULL;
 DELETE FROM mbad.logs;
 UPDATE mbad.logs
 SET  zone ='3-Server' WHERE zone = ' 3-erver';
-SELECT count(*)
-FROM mbad.logs
-WHERE duration IS NULL
+
 
 
 DELETE FROM mbad.simple_motifs
 WHERE numberofvisit = 1 AND avgduration != 0
 
 SELECT count(*)
-FROM mbad.simple_motifs
+FROM mbad.simple_motifs;
+
+update mbad.simple_motifs
+set "zone" = trim(zone);
 
 update logs
-set "zone" = trim(zone)
+set employee_id = trim(employee_id);
 
-update logs
-set employee_id = trim(employee_id)
+UPDATE logs SET duration = 0
+WHERE duration is NULL ;
+alter TABLE mbad.logs
+    ADD COLUMN wd CHAR(20);
+
+UPDATE logs set wd = to_char("date", 'Day');

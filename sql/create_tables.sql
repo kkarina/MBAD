@@ -239,3 +239,9 @@ CREATE TABLE mbad.proxout_mc2 (
   zone        CHAR(20)
 );
 
+CREATE TABLE mbad.logs_motif (
+  employee_id CHAR(30),
+  zone char(20),
+  timestamp TIMESTAMP,
+  motif char(100)
+)

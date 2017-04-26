@@ -147,7 +147,8 @@ INSERT INTO simple_motifs_test
     motif,
     "cid",
     cit,
-    department, office_zone
+    department,
+    office_zone
   FROM mbad.simple_motifs;
 --конец
 --вставка в logs
@@ -191,6 +192,9 @@ INSERT INTO mbad.simple_motifs (employee_id, zone, wd, number_of_sample, avgdura
          AND d.wd = t.wd
          AND d.numberofvisit = t.numberofvisit;
 
+DELETE from mbad.simple_motifs
+  WHERE numberofvisit = 1 AND (avgduration!=0 and simple_motifs.zone!='1-1');
+
 --импорт в proxout_mc2
 COPY mbad.proxout_mc2 ("timestamp", type, prox_id, floor, zone)
 FROM 'c://proxOut-MC2.csv'
@@ -202,3 +206,4 @@ COPY mbad.employee (id, department, office)
 FROM 'c://EmployeeList.csv'
 WITH DELIMITER ','
 CSV HEADER;
+

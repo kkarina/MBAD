@@ -62,7 +62,6 @@ public class InsertIntoTables {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            //System.out.println(query);
         }
     }
 
@@ -98,7 +97,6 @@ public class InsertIntoTables {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            //System.out.println(query);
         }
     }
 

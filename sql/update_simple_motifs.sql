@@ -1,13 +1,13 @@
 --обнуление мотивов
 UPDATE simple_motifs
-SET motif = NULL
+SET motif = NULL;
 
 --доверительный интервал
 UPDATE mbad.simple_motifs
-SET "cid" = 0.475 * duration_sko / sqrt(numberofvisit);
+SET "cid" = 0.5 * duration_sko / sqrt(numberofvisit);
 
 UPDATE mbad.simple_motifs
-SET "cit" = 0.475 * time_sko / sqrt(numberofvisit);
+SET "cit" = 0.5 * time_sko / sqrt(numberofvisit);
 
 --указание номера офиса сотрудника
 UPDATE simple_motifs sm
@@ -18,14 +18,13 @@ FROM (SELECT
       FROM employee) t
 WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
 --указание отдела сотрудника
-UPDATE simple_motifs_test sm
+UPDATE simple_motifs sm
 SET department = t.department
 FROM (SELECT
         "id",
         department
       FROM employee) t
 WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
-
 
 --пришел на рабочее место
 UPDATE simple_motifs
@@ -57,29 +56,13 @@ WHERE zone = '1-1' AND avgduration >= 28800;
 --сквозные зоны
 UPDATE mbad.simple_motifs
 SET motif = 'прошел через ' || "zone"
-WHERE ("zone" != '1-4' AND "zone" != '2-4' AND "zone" != '3-4') AND avgduration > 0 AND avgduration < 130 and motif!='пришел на работу';
+WHERE
+  ("zone" != '1-4' AND "zone" != '2-4' AND "zone" != '3-4') AND avgduration > 0 AND avgduration < 130 AND motif IS NULL;
 
 --зашел в гастроном
 UPDATE mbad.simple_motifs
 SET motif = 'зашел в гастроном'
 WHERE "zone" = '1-2';
-
---пришел на работу
-UPDATE mbad.simple_motifs sm
-SET motif = 'пришел на работу'
-FROM (
-       SELECT
-         employee_id,
-         wd,
-         min(avgtime) AS avgtime
-       FROM mbad.simple_motifs
-       WHERE "zone" = '1-1'
-       GROUP BY employee_id, wd
-     ) t
-WHERE sm.zone = '1-1'
-      AND sm.employee_id = t.employee_id
-      AND sm.wd = t.wd
-      AND sm.avgtime = t.avgtime;
 
 --пришел на работу
 UPDATE mbad.simple_motifs sm
@@ -114,7 +97,7 @@ WHERE s.employee_id != x."id"
       AND avgduration > 59
       AND avgduration < 7200
       AND motif IS NULL
-      AND s.zone!= s.office_zone;
+      AND s.zone != s.office_zone;
 
 --зашел в уборную
 UPDATE simple_motifs
@@ -125,56 +108,69 @@ WHERE ("zone" = '3-2' OR "zone" = '2-7' OR "zone" = '1-1')
       AND motif IS NULL;
 
 --митинг в зоне 1-6
-update simple_motifs
-set motif = 'митинг в 1-6'
-where zone = '1-6' and avgduration > 2680
-and (avgtime>8830 and avgtime<22000);
+UPDATE simple_motifs
+SET motif = 'митинг в 1-6'
+WHERE zone = '1-6' AND avgduration > 2680
+      AND (avgtime > 8830 AND avgtime < 22000);
 
 --серверная
-update simple_motifs
-set motif = 'зашел в серверную'
-where zone = '3-Server';
+UPDATE simple_motifs
+SET motif = 'зашел в серверную'
+WHERE zone = '3-Server';
 
 --совещание в 2-1
-update mbad.simple_motifs
-set motif = 'совещание в 2-1'
-where zone = '2-1'
-and motif is null
-and avgduration > 1000
-and avgduration < 7200
-
+UPDATE mbad.simple_motifs
+SET motif = 'совещание в 2-1'
+WHERE zone = '2-1'
+      AND motif IS NULL
+      AND avgduration > 1000
+      AND avgduration < 7200;
 
 --дневной митинг в 2-6
-update mbad.simple_motifs
-set motif = 'дневной митинг в 2-6'
-where "zone" = '2-6'
-and avgduration > 2900
-and avgtime >41800
-and avgtime<45000
-and motif is null;
+UPDATE mbad.simple_motifs
+SET motif = 'дневной митинг в 2-6'
+WHERE "zone" = '2-6'
+      AND avgduration > 2900
+      AND avgtime > 41800
+      AND avgtime < 45000
+      AND motif IS NULL;
 
 --вечерний митинг в 2-6
-update mbad.simple_motifs
-set motif = 'вечерний митинг в 2-6'
-where "zone" = '2-6'
-and avgduration > 2900
-and avgtime >72000
-and avgtime<73500
-and motif is null;
+UPDATE mbad.simple_motifs
+SET motif = 'вечерний митинг в 2-6'
+WHERE "zone" = '2-6'
+      AND avgduration > 2900
+      AND avgtime > 72000
+      AND avgtime < 73500
+      AND motif IS NULL;
 
 --совещание HR в 2-6
-update mbad.simple_motifs
-set motif = 'совещание в 2-6'
-where "zone" = '2-6'
-and avgduration > 5900
-and avgtime >52000
-and wd = 'Wednesday'
-and motif is null;
+UPDATE mbad.simple_motifs
+SET motif = 'совещание в 2-6'
+WHERE "zone" = '2-6'
+      AND avgduration > 5900
+      AND avgtime > 52000
+      AND wd = 'Wednesday'
+      AND motif IS NULL;
 
 --зашел в комнату отдыха
-update mbad.simple_motifs
-set motif = 'зашел в комнату отдыха'
-where "zone" = '2-1'
-and avgduration >=300
-and avgduration <1000
-and motif is null
+UPDATE mbad.simple_motifs
+SET motif = 'зашел в комнату отдыха'
+WHERE "zone" = '2-1'
+      AND avgduration >= 300
+      AND avgduration < 1000
+      AND motif IS NULL;
+
+--Loading
+UPDATE mbad.simple_motifs
+SET motif = 'Loading'
+WHERE zone = '1-3' AND avgduration > 19330 AND simple_motifs.motif ISNULL;
+
+--null
+UPDATE mbad.simple_motifs
+    SET motif = '0'
+WHERE motif is NULL ;
+
+
+select * FROM mbad.simple_motifs
+where motif = '0'

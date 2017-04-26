@@ -151,8 +151,10 @@ set motif = 'зашел в комнату отдыха'
 where "zone" = '2-1'
 and avgduration >=300
 and avgduration <1000
-and motif is null
+and motif is null;
 --обнуление мотивов
 UPDATE simple_motifs_test
 SET motif = NULL
+
+--Loading
 
