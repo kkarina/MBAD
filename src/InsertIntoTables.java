@@ -267,5 +267,11 @@ public class InsertIntoTables {
 
     }
 
+
+
+    public void GetAvgByDep() throws Exception {
+
+    }
+
 }
 

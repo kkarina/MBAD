@@ -103,8 +103,46 @@ BEGIN
         AND pr.number_of_sample = a.number_of_sample
         AND pr.duration = a.duration
         AND pr.time = a.time;
+  RETURN 1;
+END;
+$BODY$
+language PLPGSQL;
 
 
+--разбиние по времени
+
+create or replace function mbad.get_number_of_sample_by_time_dep()
+	returns integer as
+$BODY$
+DECLARE
+BEGIN
+  UPDATE mbad.proxout pr
+  SET number_of_sample = a.new_number_of_sample FROM (SELECT
+                                                        p.*,
+                                                        z.sko_by_avg,
+                                                        z.avgTime,
+                                                        CASE
+                                                        WHEN p.time <= z.avgTime AND z.sko_by_avg >= 0.2
+                                                          THEN p.number_of_sample * 10 + 1
+                                                        WHEN p.time > z.avgTime AND z.sko_by_avg >= 0.2
+                                                          THEN p.number_of_sample * 10 + 2
+                                                        WHEN z.sko_by_avg < 0.2
+                                                          THEN p.number_of_sample
+                                                        END AS new_number_of_sample
+
+                                                      FROM mbad.proxout p LEFT JOIN (SELECT *
+                                                                                     FROM mbad.avgtime_dep
+                                                                                    ) z
+                                                          ON p.department = z.department
+                                                             AND p.zone = z.zone
+                                                             AND p.wd = z.wd
+                                                             AND p.number_of_sample = z.number_of_sample) a
+  WHERE pr.department = a.department
+        AND pr.zone = a.zone
+        AND pr.wd = a.wd
+        AND pr.number_of_sample = a.number_of_sample
+        AND pr.duration = a.duration
+        AND pr.time = a.time;
   RETURN 1;
 END;
 $BODY$
