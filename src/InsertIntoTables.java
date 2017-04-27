@@ -268,10 +268,169 @@ public class InsertIntoTables {
     }
 
 
-
     public void GetAvgByDep() throws Exception {
+        String query1, query2;
+        st = con.createStatement();
+        stmt = con.createStatement();
+        query1 = " DELETE FROM mbad.avgduration_dep;\n" +
+                "INSERT INTO mbad.avgduration_dep (department, zone, wd, avgduration, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
+                "  SELECT\n" +
+                "    t.*,\n" +
+                "    CASE WHEN avgduration != 0\n" +
+                "      THEN round(sko / avgduration, 3)\n" +
+                "    WHEN avgduration = 0\n" +
+                "      THEN 0\n" +
+                "    END AS sko_by_avg\n" +
+                "\n" +
+                "  FROM\n" +
+                "    (SELECT DISTINCT\n" +
+                "       department,\n" +
+                "       zone,\n" +
+                "       wd,\n" +
+                "       round(avg(duration)\n" +
+                "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "               ORDER BY NULL)) AS avgduration,\n" +
+                "       count(zone)\n" +
+                "       OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "         ORDER BY NULL)        AS numberofvisit,\n" +
+                "       round(stddev_pop(duration)\n" +
+                "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "               ORDER BY NULL)) AS sko,\n" +
+                "       number_of_sample\n" +
+                "\n" +
+                "     FROM mbad.proxout) t;";
+        try {
+            stmt.execute(query1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        query2 = "SELECT max(sko_by_avg)FROM mbad.avgduration_dep ";
 
+        rs = stmt.executeQuery(query2);
+        rs.next();
+        rs.getString(1);
+        int k = 1;
+        double i = Double.parseDouble(rs.getString(1));
+        while (i >= 0.5) {
+            stmt.execute("select mbad.get_number_of_sample_dep();\n" +
+                    "DELETE FROM mbad.avgduration_dep;\n" +
+                    "INSERT INTO mbad.avgduration_dep (department, zone, wd, avgduration, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
+                    "  SELECT\n" +
+                    "    t.*,\n" +
+                    "    CASE WHEN avgduration != 0\n" +
+                    "      THEN round(sko / avgduration, 3)\n" +
+                    "    WHEN avgduration = 0\n" +
+                    "      THEN 0\n" +
+                    "    END AS sko_by_avg\n" +
+                    "\n" +
+                    "  FROM\n" +
+                    "    (SELECT DISTINCT\n" +
+                    "       department,\n" +
+                    "       zone,\n" +
+                    "       wd,\n" +
+                    "       round(avg(duration)\n" +
+                    "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "               ORDER BY NULL)) AS avgduration,\n" +
+                    "       count(zone)\n" +
+                    "       OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "         ORDER BY NULL)        AS numberofvisit,\n" +
+                    "       round(stddev_pop(duration)\n" +
+                    "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "               ORDER BY NULL)) AS sko,\n" +
+                    "       number_of_sample\n" +
+                    "\n" +
+                    "     FROM mbad.proxout) t;\n");
+            System.out.println(i);
+            k = k + 2;
+            rs = stmt.executeQuery(query2);
+            rs.next();
+            i = Double.parseDouble(rs.getString(1));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
     }
 
+    public void GetAvgByTimeDep() throws Exception{
+        String query1, query2;
+        st = con.createStatement();
+        stmt = con.createStatement();
+        query1 = "DELETE FROM mbad.avgtime_dep;\n" +
+                "INSERT INTO mbad.avgtime_dep (department, zone, wd, avgtime, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
+                "  SELECT\n" +
+                "    t.*,\n" +
+                "    CASE WHEN avgtime != 0\n" +
+                "      THEN round(sko / avgtime, 3)\n" +
+                "    WHEN avgtime = 0\n" +
+                "      THEN 0\n" +
+                "    END AS sko_by_avg\n" +
+                "\n" +
+                "  FROM\n" +
+                "    (SELECT DISTINCT\n" +
+                "       department,\n" +
+                "       zone,\n" +
+                "       wd,\n" +
+                "       round(avg(time)\n" +
+                "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "               ORDER BY NULL)) AS avgtime,\n" +
+                "       count(zone)\n" +
+                "       OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "         ORDER BY NULL)        AS numberofvisit,\n" +
+                "       round(stddev_pop(time)\n" +
+                "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                "               ORDER BY NULL)) AS sko,\n" +
+                "       number_of_sample\n" +
+                "     FROM mbad.proxout) t;\n";
+        try {
+            stmt.execute(query1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        query2 = "SELECT max(sko_by_avg)FROM mbad.avgtime_dep ";
+
+        rs = stmt.executeQuery(query2);
+        rs.next();
+        rs.getString(1);
+        int k = 1;
+        double i = Double.parseDouble(rs.getString(1));
+        while (i >= 0.2) {
+            stmt.execute("SELECT mbad.get_number_of_sample_by_time_dep();" +
+                    "DELETE FROM mbad.avgtime_dep;\n" +
+                    "INSERT INTO mbad.avgtime_dep (department, zone, wd, avgtime, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
+                    "  SELECT\n" +
+                    "    t.*,\n" +
+                    "    CASE WHEN avgtime != 0\n" +
+                    "      THEN round(sko / avgtime, 3)\n" +
+                    "    WHEN avgtime = 0\n" +
+                    "      THEN 0\n" +
+                    "    END AS sko_by_avg\n" +
+                    "\n" +
+                    "  FROM\n" +
+                    "    (SELECT DISTINCT\n" +
+                    "       department,\n" +
+                    "       zone,\n" +
+                    "       wd,\n" +
+                    "       round(avg(time)\n" +
+                    "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "               ORDER BY NULL)) AS avgtime,\n" +
+                    "       count(zone)\n" +
+                    "       OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "         ORDER BY NULL)        AS numberofvisit,\n" +
+                    "       round(stddev_pop(time)\n" +
+                    "             OVER (PARTITION BY department, zone, wd, number_of_sample\n" +
+                    "               ORDER BY NULL)) AS sko,\n" +
+                    "       number_of_sample\n" +
+                    "     FROM mbad.proxout) t;\n");
+            System.out.println(i);
+            k = k + 2;
+            rs = stmt.executeQuery(query2);
+            rs.next();
+            i = Double.parseDouble(rs.getString(1));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+
+    }
 }
 

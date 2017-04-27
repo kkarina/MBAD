@@ -11,6 +11,7 @@ FROM (SELECT
         department
       FROM mbad.employee) t
 WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');
+
 --удаление и вставка из avgduration_dep
 DELETE FROM mbad.avgduration_dep;
 INSERT INTO mbad.avgduration_dep (department, zone, wd, avgduration, numberofvisit, sko, number_of_sample, sko_by_avg)
@@ -111,6 +112,7 @@ language PLPGSQL;
 
 --разбиние по времени
 
+
 create or replace function mbad.get_number_of_sample_by_time_dep()
 	returns integer as
 $BODY$
@@ -148,4 +150,33 @@ END;
 $BODY$
 language PLPGSQL;
 
-select mbad.get_number_of_sample_dep();
+
+-- объединение avgduration_dep и avgtime_dep
+INSERT INTO mbad.simple_motifs_dep (department, zone, wd, number_of_sample, avgduration,
+                                numberofvisit, duration_sko, avgtime, time_sko)
+  SELECT
+    d.department,
+    d.zone,
+    d.wd,
+    d.number_of_sample,
+    d.avgduration,
+    d.numberofvisit,
+    d.sko AS duration_sko,
+    t.avgtime,
+    t.sko AS time_sko
+  FROM mbad.avgduration_dep d LEFT JOIN mbad.avgtime_dep t
+      ON d.department = t.department
+         AND d."zone" = t."zone"
+         AND d.number_of_sample = t.number_of_sample
+         AND d.wd = t.wd
+         AND d.numberofvisit = t.numberofvisit;
+
+
+insert into mbad.simple_motifs_dep_1v (department, zone, wd, number_of_sample, avgduration,
+                                numberofvisit, duration_sko, avgtime, time_sko, work_place)
+select department, zone, wd, number_of_sample, avgduration,
+                                numberofvisit, duration_sko, avgtime, time_sko, work_place
+from mbad.simple_motifs_dep
+where numberofvisit = 1;
+
+select count(*) from mbad.simple_motifs_dep
