@@ -11,12 +11,12 @@
       <quote-values-containing-separator value="false" />
       <quote-all-values value="false" />
       <value-separator value="," />
-      <file-name value="logs.csv" />
+      <file-name value="logs_motif.csv" />
       <file-location value="C:\Users\Afashokova\IdeaProjects\MBAD\data" />
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="CSV" />
-      <charset value="windows-1251" />
+      <charset value="UTF-8" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -25,9 +25,8 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
-        <schema name="information_schema" object-types="function, table, view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function, table, view" />
+        <schema name="pg_catalog" object-types="function" />
         <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
@@ -66,9 +65,26 @@ select * from mbad.simple_motifs
 order by employee_id, wd, avgtime;
 
 
-select *,  from mbad.logs_motif
-where 
-order by employee_id, date, time]]></console>
+select *  from mbad.logs_motif
+where motif = 'СЃРєРІРѕР·РЅР°СЏ Р·РѕРЅР°' or motif = 'Р·Р°С€РµР» РІ Р»РёС„С‚'
+ or motif = 'РІС‹С€РµР» РёР· Р»РёС„С‚Р°'
+ group by employee_id, date
+ order by employee_id, date, time;
+
+
+select *
+from(
+    select p.*
+    lead(motif) over (partition by employee_id order by "date", time) next motif,
+    lead(dur)
+    from mbad.logs_motif p)t
+)
+  select count(*)
+  from mbad.logs_motif
+where motif = 'СЃРєРІРѕР·РЅР°СЏ Р·РѕРЅР°'
+
+select employee_id, zone, date, wd, time, duration, department, motif  from mbad.logs_motif
+"          order  by employee_id, date, time]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
@@ -77,6 +93,7 @@ order by employee_id, date, time]]></console>
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.avgtime_dep" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.proxout" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.logs_motif" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.proxout_mc2" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.simple_motifs" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.sequences" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" dataset="mbad.avgtime_dep1" active-filter-id="EMPTY_FILTER" />
@@ -113,7 +130,7 @@ order by employee_id, date, time]]></console>
     <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_selections.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_logs_motif.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
@@ -164,7 +181,7 @@ order by employee_id, date, time]]></console>
           <password value="MTIz" />
         </database>
         <properties>
-          <auto-commit value="false" />
+          <auto-commit value="true" />
         </properties>
         <ssh-settings>
           <active value="false" />
@@ -328,7 +345,7 @@ order by employee_id, date, time]]></console>
         <data-length-threshold value="250" />
       </values-list-popup>
       <general>
-        <fetch-block-size value="100" />
+        <fetch-block-size value="10000" />
         <fetch-timeout value="30" />
         <trim-whitespaces value="true" />
         <convert-empty-strings-to-null value="true" />

@@ -40,3 +40,15 @@ WHERE sm.zone = '1-1'
       AND sm.employee_id = t.employee_id
       AND sm.date = t.date
       AND sm.time = t.time;
+
+
+update logs_motif
+set motif = 'сквозная зона'
+where motif = 'скваозная зона'
+
+
+update logs_motif
+set motif = ''
+where motif is null;
+select * from mbad.logs_motif
+            order  by employee_id, date, time

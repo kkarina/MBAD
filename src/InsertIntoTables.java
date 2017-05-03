@@ -430,5 +430,33 @@ public class InsertIntoTables {
         con.close();
 
     }
-}
 
+
+public void DeleteZones() throws Exception {
+    String query1;
+    st = con.createStatement();
+    stmt = con.createStatement();
+    query1 = "select employee_id, zone, date, wd, time, duration, department, motif  from mbad.logs_motif\n" +
+            "            order  by employee_id, date, time";
+    try {
+        rs = stmt.executeQuery(query1);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    String motif = "";
+    while (rs.next()) {
+        if (motif.contains("сквозная зона") && motif.equals(rs.getString(8))){
+            st.execute("delete from mbad.logs_motif " +
+                    "where employee_id = '" + rs.getString(1) + "'" +
+                    "and zone  = '" + rs.getString(2) + "' " +
+                    "and date = '" + rs.getString(3) + "' " +
+                    "and time =  '" + rs.getString(5) + "' " +
+                    "and motif = '" + rs.getString(8) + "'");
+            System.out.println(motif+ " " + rs.getString(8));
+
+        }
+        else
+        motif = rs.getString(8);
+    }
+
+}}

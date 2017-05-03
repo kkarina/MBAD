@@ -10,13 +10,12 @@ public class MBADApp {
         s.Connetion();
         //s.insertIntoProxOut();
         //s.InsertIntoAvgDuration();
-        //s.insertIntoEmployee();
-        //s.insertIntoIdZone();
-        //s.selectFromProxOut();
         //s.GetAvgDuration();
         //s.GetAvgTime();
-        s.GetAvgByDep();
-        s.GetAvgByTimeDep();
+        //s.GetAvgByDep();
+        //s.GetAvgByTimeDep();
+        s.DeleteZones();
+        s.CloseConnection();
         //g.NearestPath(0,4);
     }
 }
