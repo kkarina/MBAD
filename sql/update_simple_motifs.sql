@@ -4,10 +4,10 @@ SET motif = NULL;
 
 --доверительный интервал
 UPDATE mbad.simple_motifs
-SET "cid" = 0.5 * duration_sko / sqrt(numberofvisit);
+SET "cid" =3 * duration_sko / sqrt(numberofvisit);
 
 UPDATE mbad.simple_motifs
-SET "cit" = 0.5 * time_sko / sqrt(numberofvisit);
+SET "cit" = 3 * time_sko / sqrt(numberofvisit);
 
 --указание номера офиса сотрудника
 UPDATE simple_motifs sm

@@ -1,4 +1,4 @@
-CREATE TABLE mbad.avgDuration_dep (
+CREATE TABLE mbad.avgDuration_dep1 (
   department      CHAR(30),
   zone             CHAR(20),
   wd               CHAR(20),
@@ -8,8 +8,8 @@ CREATE TABLE mbad.avgDuration_dep (
   sko_by_avg       REAL,
   number_of_sample INT
 );
-
-CREATE TABLE mbad.avgtime_dep
+commit
+CREATE TABLE mbad.avgtime_dep1
 (
   department      CHAR(30),
   zone             CHAR(20),

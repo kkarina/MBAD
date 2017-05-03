@@ -226,9 +226,6 @@ INSERT INTO mbad.avgduration (employee_id, zone, wd, avgduration, numberofvisit,
 
      FROM mbad.proxout) t;
 
---обновление proxout
-UPDATE mbad.proxout
-SET number_of_sample = 1;
 
 --создание proxout_mc2
 CREATE TABLE mbad.proxout_mc2 (
@@ -242,6 +239,11 @@ CREATE TABLE mbad.proxout_mc2 (
 CREATE TABLE mbad.logs_motif (
   employee_id CHAR(30),
   zone char(20),
-  timestamp TIMESTAMP,
+  "date" date,
+  wd char(20),
+  "time" int,
+  duration int,
+  department char (30),
   motif char(100)
-)
+);
+commit

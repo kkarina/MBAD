@@ -346,9 +346,7 @@ public class InsertIntoTables {
             rs.next();
             i = Double.parseDouble(rs.getString(1));
         }
-        rs.close();
-        stmt.close();
-        con.close();
+
     }
 
     public void GetAvgByTimeDep() throws Exception{

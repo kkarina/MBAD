@@ -207,3 +207,5 @@ FROM 'c://EmployeeList.csv'
 WITH DELIMITER ','
 CSV HEADER;
 
+select distinct motif
+from mbad.simple_motifs_dep

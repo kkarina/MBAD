@@ -4,10 +4,10 @@ where numberofvisit = 1
 
 --доверительный интервал
 UPDATE mbad.simple_motifs_dep
-SET "cid" = 1.96 * duration_sko / sqrt(numberofvisit);
+SET "cid" = 3 * duration_sko / sqrt(numberofvisit);
 
 UPDATE mbad.simple_motifs_dep
-SET "cit" = 1.96 * time_sko / sqrt(numberofvisit);
+SET "cit" = 3 * time_sko / sqrt(numberofvisit);
 --указание рабочего места
 UPDATE simple_motifs_dep sm
 SET work_place = true
@@ -60,9 +60,11 @@ FROM (
        SELECT
          department,
          wd,
-         min(avgtime) AS avgtime
+         avgtime
        FROM mbad.simple_motifs_dep
        WHERE "zone" = '1-1'
+       and avgtime >=min(avgtime)
+       and avgtime<= min(avgtime)+
        GROUP BY department, wd
      ) t
 WHERE sm.zone = '1-1'
@@ -158,7 +160,7 @@ and motif is null;
 --неизвестные мотивы
 update mbad.simple_motifs_dep s
 set motif = x.num
-from (select 'мотив '||row_number() over()  num, avgtime
+from (select 'мотив '||row_number() over ()  num, avgtime
         from mbad.simple_motifs_dep
         where motif is null
         )x

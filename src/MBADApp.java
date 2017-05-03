@@ -15,7 +15,7 @@ public class MBADApp {
         //s.selectFromProxOut();
         //s.GetAvgDuration();
         //s.GetAvgTime();
-        //s.GetAvgByDep();
+        s.GetAvgByDep();
         s.GetAvgByTimeDep();
         //g.NearestPath(0,4);
     }
