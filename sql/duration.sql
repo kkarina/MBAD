@@ -33,3 +33,6 @@ WHERE sm.zone = '1-1'
 
 
 
+select distinct motif
+from mbad.logs_motif
+where department  = 'Executive'
