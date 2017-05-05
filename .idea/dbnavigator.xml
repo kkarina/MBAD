@@ -11,7 +11,7 @@
       <quote-values-containing-separator value="false" />
       <quote-all-values value="false" />
       <value-separator value="," />
-      <file-name value="logs_motif.csv" />
+      <file-name value="logs_motif1.csv" />
       <file-location value="C:\Users\Afashokova\IdeaProjects\MBAD\data" />
       <scope value="GLOBAL" />
       <destination value="FILE" />
@@ -25,8 +25,9 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df">
+        <schema name="information_schema" object-types="function, table, view" />
         <schema name="mbad" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="function" />
+        <schema name="pg_catalog" object-types="function, table, view" />
         <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
@@ -66,8 +67,8 @@ order by employee_id, wd, avgtime;
 
 
 select *  from mbad.logs_motif
-where motif = 'СЃРєРІРѕР·РЅР°СЏ Р·РѕРЅР°' or motif = 'Р·Р°С€РµР» РІ Р»РёС„С‚'
- or motif = 'РІС‹С€РµР» РёР· Р»РёС„С‚Р°'
+where motif = 'РЎРѓР С”Р Р†Р С•Р В·Р Р…Р В°РЎРЏ Р В·Р С•Р Р…Р В°' or motif = 'Р В·Р В°РЎв‚¬Р ВµР В» Р Р† Р В»Р С‘РЎвЂћРЎвЂљ'
+ or motif = 'Р Р†РЎвЂ№РЎв‚¬Р ВµР В» Р С‘Р В· Р В»Р С‘РЎвЂћРЎвЂљР В°'
  group by employee_id, date
  order by employee_id, date, time;
 
@@ -81,10 +82,10 @@ from(
 )
   select count(*)
   from mbad.logs_motif
-where motif = 'СЃРєРІРѕР·РЅР°СЏ Р·РѕРЅР°'
+where motif = 'РЎРѓР С”Р Р†Р С•Р В·Р Р…Р В°РЎРЏ Р В·Р С•Р Р…Р В°'
 
 select employee_id, zone, date, wd, time, duration, department, motif  from mbad.logs_motif
-"          order  by employee_id, date, time]]></console>
+         order  by employee_id, date, time]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
@@ -125,18 +126,18 @@ select employee_id, zone, date, wd, time, duration, department, motif  from mbad
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs_test.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_selections.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_logs_motif.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql/avg_duration.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="8a750363-dc95-446b-b7b5-eeac77cf1501" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs_test.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
-    <mapping file-url="file://$PROJECT_DIR$/sql_departments/insert_into_logs_motifs_dep.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
     <mapping file-url="file://$PROJECT_DIR$/sql_departments/update_simple_motifs_dep.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/duration.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql_departments/insert_into_logs_motifs_dep.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/insert_into_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_simple_motifs.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_tables.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql_departments/create_selections.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
+    <mapping file-url="file://$PROJECT_DIR$/sql/update_employee.sql" connection-id="734db6ae-7fc0-40ab-b9bd-ba1443ef82df" current-schema="mbad" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -181,7 +182,7 @@ select employee_id, zone, date, wd, time, duration, department, motif  from mbad
           <password value="MTIz" />
         </database>
         <properties>
-          <auto-commit value="true" />
+          <auto-commit value="false" />
         </properties>
         <ssh-settings>
           <active value="false" />

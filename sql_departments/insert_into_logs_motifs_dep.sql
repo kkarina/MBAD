@@ -44,7 +44,8 @@ WHERE sm.zone = '1-1'
 
 update logs_motif
 set motif = 'сквозная зона'
-where motif = 'скваозная зона'
+where motif = 'вышел из лифта'
+or motif = 'зашел в лифт'
 
 
 update logs_motif
