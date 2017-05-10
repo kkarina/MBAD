@@ -155,12 +155,12 @@ INSERT INTO simple_motifs_test
 INSERT INTO mbad.logs (employee_id, ZONE, DATE, TIME, duration)
   SELECT
     prox_id,
-    "floor" || '-' || substring("zone" FROM 2)                                                             AS "zone",
-    ("timestamp") :: DATE                                                                                  AS "date",
-    date_part('hour', "timestamp") * 3600 + date_part('minute', "timestamp") * 60 + date_part('second',
-                                                                                              "timestamp") AS "time",
-    extract(EPOCH FROM t.next_time -
-                       t.timestamp)                                                                        AS duration
+    "floor" || '-' || substring("zone" FROM 2)  AS "zone",
+    ("timestamp") :: DATE                       AS "date",
+    date_part('hour', "timestamp") * 3600 + date_part('minute', "timestamp")*60 + date_part('second', "timestamp")
+                                                AS "time",
+    round(extract(EPOCH FROM t.next_time -
+                             t.timestamp)) AS duration
   FROM
     (
       SELECT
@@ -171,7 +171,9 @@ INSERT INTO mbad.logs (employee_id, ZONE, DATE, TIME, duration)
       FROM mbad.proxout_mc2 p
     ) t;
 --конец вставки в logs
-
+UPDATE mbad.logs
+SET duration = 0
+WHERE duration IS NULL;
 --объединение avgduration c avgtime
 INSERT INTO mbad.simple_motifs (employee_id, zone, wd, number_of_sample, avgduration,
                                 numberofvisit, duration_sko, avgtime, time_sko)
@@ -192,8 +194,8 @@ INSERT INTO mbad.simple_motifs (employee_id, zone, wd, number_of_sample, avgdura
          AND d.wd = t.wd
          AND d.numberofvisit = t.numberofvisit;
 
-DELETE from mbad.simple_motifs
-  WHERE numberofvisit = 1 AND (avgduration!=0 and simple_motifs.zone!='1-1');
+DELETE FROM mbad.simple_motifs
+WHERE numberofvisit = 1 AND (avgduration != 0 AND simple_motifs.zone != '1-1');
 
 --импорт в proxout_mc2
 COPY mbad.proxout_mc2 ("timestamp", type, prox_id, floor, zone)
@@ -208,4 +210,11 @@ WITH DELIMITER ','
 CSV HEADER;
 
 select distinct motif
-from mbad.simple_motifs_dep
+from mbad.simple_motifs_dep;
+
+INSERT into mbad.proxout (employee_id, zone, wd, duration, time, department)
+    SELECT employee_id, zone, wd, duration, time, department
+FROM mbad.logs;
+commit;
+DELETE from mbad.proxout
+

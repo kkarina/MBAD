@@ -41,30 +41,6 @@ public class InsertIntoTables {
 
     }
 
-    public void insertIntoProxOut() throws Exception {
-        String query;
-        CSVReader reader = new CSVReader(new FileReader("data/prox.csv"), ';');
-        reader.readNext();
-        stmt = con.createStatement();
-        String[] stringOfData;
-        String duration;
-        while ((stringOfData = reader.readNext()) != null) {
-
-            if (stringOfData[3].trim().isEmpty())
-                duration = "0";
-            else duration = stringOfData[3].trim();
-
-            query = "insert into mbad.proxout" +
-                    "(employee_id,zone,wd,duration,time, number_of_sample) " +
-                    "values ('" + stringOfData[0].trim() + "','" + stringOfData[1].trim() + "' ,'" + stringOfData[2].trim() + "' ,'" + duration + "' ,'" + stringOfData[4].trim() + "', 1" + ");";
-            try {
-                stmt.executeUpdate(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void InsertIntoAvgDuration() throws Exception {
         String query;
         CSVReader reader = new CSVReader(new FileReader("data/avgDuration.csv"), ';');
@@ -311,7 +287,7 @@ public class InsertIntoTables {
         rs.getString(1);
         int k = 1;
         double i = Double.parseDouble(rs.getString(1));
-        while (i >= 0.5) {
+        while (i > 0.5) {
             stmt.execute("select mbad.get_number_of_sample_dep();\n" +
                     "DELETE FROM mbad.avgduration_dep;\n" +
                     "INSERT INTO mbad.avgduration_dep (department, zone, wd, avgduration, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +
@@ -391,7 +367,7 @@ public class InsertIntoTables {
         rs.getString(1);
         int k = 1;
         double i = Double.parseDouble(rs.getString(1));
-        while (i >= 0.2) {
+        while (i >0.2) {
             stmt.execute("SELECT mbad.get_number_of_sample_by_time_dep();" +
                     "DELETE FROM mbad.avgtime_dep;\n" +
                     "INSERT INTO mbad.avgtime_dep (department, zone, wd, avgtime, numberofvisit, sko, number_of_sample, sko_by_avg)\n" +

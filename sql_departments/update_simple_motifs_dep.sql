@@ -1,5 +1,5 @@
 delete from simple_motifs_dep
-where numberofvisit = 1
+where numberofvisit = 1;
 
 
 --доверительный интервал
@@ -20,7 +20,7 @@ t.zone = sm.zone;
 
 update simple_motifs_dep
 set work_place = false
-where work_place is null
+where work_place is null;
 
 --зашел в лифт
 UPDATE mbad.simple_motifs_dep
@@ -60,17 +60,18 @@ FROM (
        SELECT
          department,
          wd,
-         avgtime
+         min(avgtime)
        FROM mbad.simple_motifs_dep
        WHERE "zone" = '1-1'
-       and avgtime >=min(avgtime)
-       and avgtime<= min(avgtime)+
+       and avgtime =min(avgtime)
        GROUP BY department, wd
      ) t
 WHERE sm.zone = '1-1'
       AND sm.department = t.department
       AND sm.wd = t.wd
       AND sm.avgtime = t.avgtime;
+
+COMMIT;
 --зашел в уборную
       UPDATE simple_motifs_dep
 SET motif = 'зашел в уборную'
@@ -142,13 +143,13 @@ WHERE zone = '1-3' AND avgduration > 19330 AND motif IS NULL;
 update mbad.simple_motifs_dep
 set motif = 'рабочее место'
 where work_place = true and avgduration >600
-and motif is null
+and motif is null;
 
 -- совещание в 3-2
 update mbad.simple_motifs_dep
 set motif = 'совещание в 3-2'
 where zone = '3-2' and avgduration>20000
-and motif is null
+and motif is null;
 
 --совещание в 3-1
 update mbad.simple_motifs_dep

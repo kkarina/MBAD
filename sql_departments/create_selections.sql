@@ -1,5 +1,6 @@
 UPDATE mbad.proxout
 SET number_of_sample = 1;
+commit
 
 alter table mbad.proxout
 add column department char(30);
@@ -171,7 +172,7 @@ INSERT INTO mbad.simple_motifs_dep (department, zone, wd, number_of_sample, avgd
          AND d.wd = t.wd
          AND d.numberofvisit = t.numberofvisit;
 
-
+COMMIT
 insert into mbad.simple_motifs_dep_1v (department, zone, wd, number_of_sample, avgduration,
                                 numberofvisit, duration_sko, avgtime, time_sko, work_place)
 select department, zone, wd, number_of_sample, avgduration,

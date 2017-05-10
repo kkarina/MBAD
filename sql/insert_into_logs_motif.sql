@@ -12,3 +12,4 @@ and l."time"<=s.avgtime + 2*s.time_sko
 order by  date, time)x
 group by x.employee_id, x.department, x."date", x."time", x.wd, x.duration, x."zone"
 having count(*)>1;
+

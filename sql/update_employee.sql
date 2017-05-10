@@ -21,7 +21,7 @@ WHERE duration IS NULL;
 
 DELETE FROM mbad.logs;
 UPDATE mbad.logs
-SET  zone ='3-Server' WHERE zone = ' 3-erver';
+SET  zone = trim(zone);
 
 
 
@@ -54,5 +54,5 @@ SET department = t.department
 FROM (SELECT
         "id",
         department
-      FROM employee) t
+      FROM mbad.employee) t
 WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+');

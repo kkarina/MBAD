@@ -21,9 +21,10 @@ on l.employee_id = p.employee_id and
    and t.wd = sm.wd
    and t.zone = sm."zone"
    and t.number_of_sample = sm.number_of_sample
-   order by t.employee_id, t.date, t.time
-delete from mbad.logs_motif
+   order by t.employee_id, t.date, t.time;
 
+delete from mbad.logs_motif
+where motif = '';
 
 update logs_motif sm
 set motif = 'пришел на работу'
@@ -42,14 +43,36 @@ WHERE sm.zone = '1-1'
       AND sm.time = t.time;
 
 
-update logs_motif
+update mbad.logs_motif
 set motif = 'сквозная зона'
 where motif = 'вышел из лифта'
-or motif = 'зашел в лифт'
+or motif = 'зашел в лифт';
 
 
 update logs_motif
 set motif = ''
 where motif is null;
+
+alter TABLE mbad.logs_motif
+    ADD COLUMN work_place BOOLEAN;
+
+UPDATE logs_motif sm
+SET work_place = true
+FROM (SELECT
+        id,
+        "zone"
+      FROM mbad.employee) t
+WHERE t.id = substring(sm.employee_id FROM '[A-Za-z]+') and
+      t.zone = sm.zone;
+UPDATE logs_motif sm
+SET work_place = FALSE
+where work_place is not TRUE ;
+
+update mbad.logs_motif
+    set motif = 'зашел к коллеге'
+where motif = 'рабочее место' AND
+  work_place = false ;
+
+
 select * from mbad.logs_motif
             order  by employee_id, date, time
